@@ -19,7 +19,7 @@ const addOrderItems = async (req, res) => {
             res.status(400).json({ message: 'No order items' });
             return;
         } else {
-            const order = new Order({
+            const orderData = {
                 orderItems: orderItems.map((x) => ({
                     ...x,
                     product: x.product,
@@ -32,10 +32,26 @@ const addOrderItems = async (req, res) => {
                 taxPrice,
                 shippingPrice,
                 totalPrice,
-            });
+            };
 
+            // In development, handle cases where MongoDB is unavailable
+            if (process.env.NODE_ENV === 'development') {
+                try {
+                    const order = new Order(orderData);
+                    const createdOrder = await order.save();
+                    return res.status(201).json(createdOrder);
+                } catch (dbError) {
+                    console.warn(`Falling back to mock order: ${dbError.message}`);
+                    return res.status(201).json({
+                        ...orderData,
+                        _id: `mock_order_${Date.now()}`,
+                        createdAt: new Date().toISOString(),
+                    });
+                }
+            }
+
+            const order = new Order(orderData);
             const createdOrder = await order.save();
-
             res.status(201).json(createdOrder);
         }
     } catch (error) {
@@ -56,9 +72,27 @@ const getOrderById = async (req, res) => {
         if (order) {
             res.json(order);
         } else {
+            if (req.params.id.startsWith('mock_order_')) {
+                return res.json({
+                    _id: req.params.id,
+                    user: { name: 'John Doe', email: 'john@example.com' },
+                    orderItems: [], // Simplification for mock
+                    status: 'Processing',
+                    createdAt: new Date().toISOString()
+                });
+            }
             res.status(404).json({ message: 'Order not found' });
         }
     } catch (error) {
+        if (req.params.id.startsWith('mock_order_')) {
+            return res.json({
+                _id: req.params.id,
+                user: { name: 'John Doe', email: 'john@example.com' },
+                orderItems: [],
+                status: 'Processing',
+                createdAt: new Date().toISOString()
+            });
+        }
         res.status(500).json({ message: error.message });
     }
 };

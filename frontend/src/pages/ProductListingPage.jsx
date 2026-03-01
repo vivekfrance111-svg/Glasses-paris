@@ -1,57 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FiChevronDown } from 'react-icons/fi';
 import axios from 'axios';
 import ProductCard from '../components/common/ProductCard';
+import CustomSelect from '../components/common/CustomSelect';
 import './ProductListingPage.css';
-
-const CustomSelect = ({ value, options, onChange, placeholder = 'Select...' }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const ref = useRef(null);
-
-    const selectedLabel = options.find(o => o.value === value)?.label || placeholder;
-
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const handleSelect = (val) => {
-        onChange(val);
-        setIsOpen(false);
-    };
-
-    return (
-        <div className={`custom-select ${isOpen ? 'open' : ''}`} ref={ref}>
-            <button
-                className="custom-select-trigger"
-                onClick={() => setIsOpen(!isOpen)}
-                type="button"
-            >
-                <span className={value ? '' : 'placeholder'}>{selectedLabel}</span>
-                <FiChevronDown className={`select-arrow ${isOpen ? 'rotated' : ''}`} />
-            </button>
-            {isOpen && (
-                <ul className="custom-select-options glass">
-                    {options.map(opt => (
-                        <li
-                            key={opt.value}
-                            className={`custom-select-option ${value === opt.value ? 'active' : ''}`}
-                            onClick={() => handleSelect(opt.value)}
-                        >
-                            {opt.label}
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
-    );
-};
 
 const ProductListingPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();

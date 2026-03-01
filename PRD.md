@@ -44,3 +44,14 @@ The Ralph Loop must complete the following checklist. Do not stop looping until 
 - [ ] **Frontend (Pages):** Build `LoginPage.jsx` and `RegisterPage.jsx` using the existing Vanilla CSS glassmorphism design tokens.
 - [ ] **Frontend (Integration):** Connect the React login/register forms to the Node.js backend endpoints.
 - [ ] **Validation (Crucial):** Use the Antigravity Browser Agent to fill out the Registration form, submit it, and verify that the user is successfully created in the database and a JWT token is saved in the browser's LocalStorage.
+
+---
+## CURRENT EXECUTION: Phase 4 Action Items
+The Ralph Loop must complete the following checklist to build the Shopping Cart and Checkout engine.
+
+- [ ] **Frontend (Cart State):** Implement global state management (React Context or Redux Toolkit) for the Shopping Cart.
+- [ ] **Frontend (Cart UI):** Build a responsive slide-out "Cart Drawer" component that opens when the cart icon in the `Header.jsx` is clicked.
+- [ ] **Frontend (Cart Logic):** Add functionality to "Add to Cart", "Remove Item", and "Adjust Quantity" directly from the Product Detail and Product Listing pages.
+- [ ] **Backend (Order DB):** Create the `orderModel.js` and `orderController.js` to handle saving user orders to MongoDB.
+- [ ] **Frontend (Checkout Page):** Build a `CheckoutPage.jsx` with a form for Shipping Details and an Order Summary.
+- [ ] **Validation:** The Loop should finish ONLY when the Browser Agent can successfully add an item to the cart, open the cart drawer, click checkout, and submit a dummy order.

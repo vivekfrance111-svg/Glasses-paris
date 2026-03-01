@@ -5,20 +5,20 @@
 - [x] Requirements gathering and finalizing the PRD.
 - [x] Define technical stack and system architecture.
 - [x] Database schema design (Users, Products, Categories, Orders, Reviews).
-- [ ] Initialize repository, setup CI/CD pipelines, and configure project linting/formatting.
-- [ ] Establish base styling tokens and layout structure (design system).
+- [x] Initialize repository, setup CI/CD pipelines, and configure project linting/formatting.
+- [x] Establish base styling tokens and layout structure (design system).
 
 ## Phase 2: Core Platform & User Authentication
-- [ ] Develop database connection and basic API endpoints.
-- [ ] Implement robust user authentication (Registration, Login, Session Management).
-- [ ] Create core frontend layouts: Navigation Header, Footer, Hero Banners.
-- [ ] Build basic administrator dashboard infrastructure.
+- [x] Develop database connection and basic API endpoints.
+- [x] Implement robust user authentication (Registration, Login, Session Management).
+- [x] Create core frontend layouts: Navigation Header, Footer, Hero Banners.
+- [x] Build basic administrator dashboard infrastructure.
 
 ## Phase 3: Product Catalog & Discovery
-- [ ] Implement backend CRUD operations for products and categories.
-- [ ] Build dynamic Product Listing Pages (PLP) with sorting and advanced filtering.
-- [ ] Develop rich Product Detail Pages (PDP) with image galleries and variant selection.
-- [ ] Enable admin capabilities for managing inventory.
+- [x] Implement backend CRUD operations for products and categories.
+- [x] Build dynamic Product Listing Pages (PLP) with sorting and advanced filtering.
+- [x] Develop rich Product Detail Pages (PDP) with image galleries and variant selection.
+- [x] Enable admin capabilities for managing inventory.
 
 ## Phase 4: E-Commerce Transaction Engine
 - [ ] Develop shopping cart functionality (Add, Remove, Adjust Quantities, Promo Codes).

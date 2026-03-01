@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/layout/AdminSidebar';
+import CustomSelect from '../components/common/CustomSelect';
 import './AdminProductEditPage.css';
 
 const AdminProductEditPage = () => {
@@ -158,16 +159,12 @@ const AdminProductEditPage = () => {
 
                                 <div className="form-group">
                                     <label>Category</label>
-                                    <select
+                                    <CustomSelect
                                         value={category}
-                                        onChange={(e) => setCategory(e.target.value)}
-                                        required
-                                    >
-                                        <option value="">Select Category</option>
-                                        {categories.map(c => (
-                                            <option key={c._id} value={c._id}>{c.name}</option>
-                                        ))}
-                                    </select>
+                                        options={categories.map(c => ({ value: c._id, label: c.name }))}
+                                        onChange={setCategory}
+                                        placeholder="Select Category"
+                                    />
                                 </div>
 
                                 <div className="form-group">

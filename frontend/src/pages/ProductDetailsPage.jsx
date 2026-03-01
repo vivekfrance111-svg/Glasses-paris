@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import CustomSelect from '../components/common/CustomSelect';
 import './ProductDetailsPage.css';
 
 const ProductDetailsPage = () => {
@@ -183,17 +184,17 @@ const ProductDetailsPage = () => {
                                 <form onSubmit={submitReviewHandler} className="review-form">
                                     <div className="form-group">
                                         <label>Rating</label>
-                                        <select
+                                        <CustomSelect
                                             value={rating}
-                                            onChange={(e) => setRating(e.target.value)}
-                                            className="form-control"
-                                        >
-                                            <option value="5">5 - Excellent</option>
-                                            <option value="4">4 - Very Good</option>
-                                            <option value="3">3 - Good</option>
-                                            <option value="2">2 - Fair</option>
-                                            <option value="1">1 - Poor</option>
-                                        </select>
+                                            options={[
+                                                { value: '5', label: '5 - Excellent' },
+                                                { value: '4', label: '4 - Very Good' },
+                                                { value: '3', label: '3 - Good' },
+                                                { value: '2', label: '2 - Fair' },
+                                                { value: '1', label: '1 - Poor' },
+                                            ]}
+                                            onChange={setRating}
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <label>Comment</label>

@@ -15,24 +15,24 @@ const ProfilePage = () => {
     const [loadingUpdate, setLoadingUpdate] = useState(false);
     const [error, setError] = useState('');
 
-    const { user, login } = useAuth();
+    const { userInfo, updateProfile } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) {
+        if (!userInfo) {
             navigate('/login');
         } else {
-            setName(user.name);
-            setEmail(user.email);
+            setName(userInfo.name);
+            setEmail(userInfo.email);
             fetchMyOrders();
         }
-    }, [user, navigate]);
+    }, [userInfo, navigate]);
 
     const fetchMyOrders = async () => {
         try {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userInfo.token}`,
                 },
             };
             const { data } = await axios.get('http://localhost:5000/api/orders/myorders', config);
@@ -56,20 +56,7 @@ const ProfilePage = () => {
         setError('');
 
         try {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-
-            const { data } = await axios.put(
-                'http://localhost:5000/api/users/profile',
-                { name, email, password },
-                config
-            );
-
-            login(data); // Update AuthContext with new data
+            await updateProfile({ name, email, password });
             setMessage('Profile Updated Successfully');
             setPassword('');
             setConfirmPassword('');

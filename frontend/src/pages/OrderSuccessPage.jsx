@@ -6,7 +6,7 @@ import './OrderSuccessPage.css';
 
 const OrderSuccessPage = () => {
     const { id } = useParams();
-    const { user } = useAuth();
+    const { userInfo } = useAuth();
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -16,7 +16,7 @@ const OrderSuccessPage = () => {
             try {
                 const config = {
                     headers: {
-                        Authorization: `Bearer ${user.token}`,
+                        Authorization: `Bearer ${userInfo.token}`,
                     },
                 };
                 const { data } = await axios.get(`http://localhost:5000/api/orders/${id}`, config);
@@ -28,10 +28,10 @@ const OrderSuccessPage = () => {
             }
         };
 
-        if (user) {
+        if (userInfo) {
             fetchOrder();
         }
-    }, [id, user]);
+    }, [id, userInfo]);
 
     if (loading) return <div className="loader-container"><div className="loader"></div></div>;
     if (error) return <div className="error-container glass-panel"><h2>Error</h2><p>{error}</p></div>;

@@ -7,7 +7,7 @@ import './CheckoutPage.css';
 
 const CheckoutPage = () => {
     const { cartItems, cartTotal, clearCart } = useCart();
-    const { user } = useAuth();
+    const { userInfo } = useAuth();
     const navigate = useNavigate();
 
     const [shippingAddress, setShippingAddress] = useState({
@@ -22,13 +22,13 @@ const CheckoutPage = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (!user) {
+        if (!userInfo) {
             navigate('/login?redirect=checkout');
         }
         if (cartItems.length === 0) {
             navigate('/products');
         }
-    }, [user, cartItems, navigate]);
+    }, [userInfo, cartItems, navigate]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -44,7 +44,7 @@ const CheckoutPage = () => {
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${userInfo.token}`,
                 },
             };
 
