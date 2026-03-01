@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { FiSliders, FiX } from 'react-icons/fi';
 import ProductCard from '../components/common/ProductCard';
 import CustomSelect from '../components/common/CustomSelect';
 import './ProductListingPage.css';
@@ -10,6 +11,7 @@ const ProductListingPage = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
     // Read from searchParams
     const categoryQuery = searchParams.get('category') || '';
@@ -85,12 +87,27 @@ const ProductListingPage = () => {
 
     return (
         <div className="plp-container container section">
+            {/* Mobile Filter Toggle */}
+            <button className="mobile-filter-toggle" onClick={() => setMobileFilterOpen(true)}>
+                <FiSliders /> Filters
+            </button>
+
             <div className="plp-layout">
+                {/* Mobile Overlay */}
+                {mobileFilterOpen && (
+                    <div className="filter-overlay" onClick={() => setMobileFilterOpen(false)}></div>
+                )}
+
                 {/* Sidebar Filters */}
-                <aside className="plp-sidebar glass-panel">
+                <aside className={`plp-sidebar glass-panel ${mobileFilterOpen ? 'mobile-open' : ''}`}>
                     <div className="filter-header">
                         <h3>Filters</h3>
-                        <button onClick={clearFilters} className="btn-text-sm">Clear All</button>
+                        <div className="filter-header-actions">
+                            <button onClick={clearFilters} className="btn-text-sm">Clear All</button>
+                            <button className="filter-close-btn" onClick={() => setMobileFilterOpen(false)}>
+                                <FiX />
+                            </button>
+                        </div>
                     </div>
 
                     <div className="filter-group">

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import CustomSelect from '../components/common/CustomSelect';
+import Skeleton from '../components/common/Skeleton';
 import './ProductDetailsPage.css';
 
 const ProductDetailsPage = () => {
@@ -19,13 +20,15 @@ const ProductDetailsPage = () => {
     // Review states
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState('');
+    const [reviewImage, setReviewImage] = useState('');
+    const [uploadingReviewImage, setUploadingReviewImage] = useState(false);
     const [submittingReview, setSubmittingReview] = useState(false);
     const [reviewError, setReviewError] = useState(null);
 
     const fetchProduct = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+            const { data } = await axios.get(`/api/products/${id}`);
             setProduct(data);
             if (data.lensOptions && data.lensOptions.length > 0) {
                 setSelectedLens(data.lensOptions[0].lensType);
@@ -42,6 +45,27 @@ const ProductDetailsPage = () => {
         fetchProduct();
     }, [id]);
 
+    const uploadReviewImageHandler = async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        setUploadingReviewImage(true);
+
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            };
+            const { data } = await axios.post('/api/upload', formData, config);
+            setReviewImage(data.image);
+            setUploadingReviewImage(false);
+        } catch (err) {
+            setReviewError(err.response?.data?.message || err.message);
+            setUploadingReviewImage(false);
+        }
+    };
+
     const submitReviewHandler = async (e) => {
         e.preventDefault();
         setSubmittingReview(true);
@@ -56,13 +80,14 @@ const ProductDetailsPage = () => {
             };
 
             await axios.post(
-                'http://localhost:5000/api/reviews',
-                { rating, comment, productId: id },
+                '/api/reviews',
+                { rating, comment, productId: id, image: reviewImage },
                 config
             );
 
             setRating(5);
             setComment('');
+            setReviewImage('');
             fetchProduct(); // Reload product to show new review
             alert('Review submitted successfully!');
         } catch (err) {
@@ -76,7 +101,34 @@ const ProductDetailsPage = () => {
         }
     };
 
-    if (loading) return <div className="container section">Loading...</div>;
+    if (loading) {
+        return (
+            <div className="pdp-container container section">
+                <div className="pdp-layout">
+                    <div className="pdp-gallery glass-panel">
+                        <Skeleton height="500px" width="100%" borderRadius="16px" className="skeleton-img" />
+                    </div>
+                    <div className="pdp-info">
+                        <Skeleton height="20px" width="100px" className="pdp-brand" />
+                        <Skeleton height="40px" width="300px" className="pdp-title" />
+                        <Skeleton height="20px" width="150px" />
+                        <Skeleton height="35px" width="120px" style={{ marginTop: '1rem' }} />
+                        <div className="pdp-selection" style={{ marginTop: '2rem' }}>
+                            <Skeleton height="20px" width="150px" />
+                            <div style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
+                                <Skeleton height="60px" width="120px" borderRadius="12px" />
+                                <Skeleton height="60px" width="120px" borderRadius="12px" />
+                            </div>
+                        </div>
+                        <div className="pdp-actions" style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
+                            <Skeleton height="50px" width="200px" borderRadius="30px" />
+                            <Skeleton height="50px" width="150px" borderRadius="30px" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     if (error) return <div className="container section">{error}</div>;
     if (!product) return null;
 
@@ -207,11 +259,22 @@ const ProductDetailsPage = () => {
                                             placeholder="Share your thoughts about this product..."
                                         ></textarea>
                                     </div>
+                                    <div className="form-group">
+                                        <label>Photo (Optional)</label>
+                                        <input
+                                            type="file"
+                                            onChange={uploadReviewImageHandler}
+                                            className="form-control"
+                                            accept="image/*"
+                                        />
+                                        {uploadingReviewImage && <p className="loading-text">Uploading image...</p>}
+                                        {reviewImage && <p className="success-text">Image uploaded!</p>}
+                                    </div>
                                     {reviewError && <p className="error-message">{reviewError}</p>}
                                     <button
                                         type="submit"
                                         className="btn-primary"
-                                        disabled={submittingReview}
+                                        disabled={submittingReview || uploadingReviewImage}
                                     >
                                         {submittingReview ? 'Submitting...' : 'Submit Review'}
                                     </button>

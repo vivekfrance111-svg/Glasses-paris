@@ -56,3 +56,24 @@
 .btn-text.delete:hover {
     color: #ef4444;
 }
+
+@media (max-width: 768px) {
+
+    .admin-table th,
+    .admin-table td {
+        padding: 0.8rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .admin-table {
+        min-width: 700px;
+    }
+
+    .product-name {
+        max-width: 100px;
+    }
+
+    .comment-cell {
+        max-width: 150px;
+    }
+}

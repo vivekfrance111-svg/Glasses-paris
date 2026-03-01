@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/layout/AdminSidebar';
 import CustomSelect from '../components/common/CustomSelect';
-import './AdminProductEditPage.css';
+import './AdminProductEditPage.css'; // Reuse the same styles
 
-const AdminProductEditPage = () => {
-    const { id: productId } = useParams();
+const AdminProductCreatePage = () => {
     const navigate = useNavigate();
     const { userInfo } = useAuth();
 
@@ -16,17 +15,34 @@ const AdminProductEditPage = () => {
     const [image, setImage] = useState('');
     const [brand, setBrand] = useState('');
     const [category, setCategory] = useState('');
-    const [countInStock, setCountInStock] = useState(0);
+    const [countInStock, setCountInStock] = useState(10);
     const [description, setDescription] = useState('');
-    const [frameStyle, setFrameStyle] = useState('');
-    const [color, setColor] = useState('');
+    const [frameStyle, setFrameStyle] = useState('Classic');
+    const [color, setColor] = useState('Black');
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [loadingUpdate, setLoadingUpdate] = useState(false);
-    const [successUpdate, setSuccessUpdate] = useState(false);
+    const [loadingCreate, setLoadingCreate] = useState(false);
     const [uploading, setUploading] = useState(false);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const { data } = await axios.get('/api/categories');
+                setCategories(data);
+                if (data.length > 0) {
+                    setCategory(data[0]._id);
+                }
+            } catch (err) {
+                setError(err.response?.data?.message || err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     const uploadFileHandler = async (e) => {
         const file = e.target.files[0];
@@ -49,40 +65,15 @@ const AdminProductEditPage = () => {
         }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Fetch categories
-                const { data: categoriesData } = await axios.get('/api/categories');
-                setCategories(categoriesData);
-
-                // Fetch product
-                const { data: productData } = await axios.get(`/api/products/${productId}`);
-                if (productData) {
-                    setName(productData.name);
-                    setPrice(productData.price);
-                    setImage(productData.image);
-                    setBrand(productData.brand);
-                    setCategory(productData.category._id || productData.category);
-                    setCountInStock(productData.countInStock);
-                    setDescription(productData.description);
-                    setFrameStyle(productData.frameStyle || '');
-                    setColor(productData.color || '');
-                }
-            } catch (err) {
-                setError(err.response?.data?.message || err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [productId]);
-
     const submitHandler = async (e) => {
         e.preventDefault();
+        if (!category) {
+            setError('Please select a category');
+            return;
+        }
+
         try {
-            setLoadingUpdate(true);
+            setLoadingCreate(true);
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,8 +81,8 @@ const AdminProductEditPage = () => {
                 },
             };
 
-            await axios.put(
-                `/api/products/${productId}`,
+            await axios.post(
+                '/api/products',
                 {
                     name,
                     price,
@@ -106,12 +97,11 @@ const AdminProductEditPage = () => {
                 config
             );
 
-            setSuccessUpdate(true);
-            setLoadingUpdate(false);
-            setTimeout(() => navigate('/admin/products'), 2000);
+            setLoadingCreate(false);
+            navigate('/admin/products');
         } catch (err) {
             setError(err.response?.data?.message || err.message);
-            setLoadingUpdate(false);
+            setLoadingCreate(false);
         }
     };
 
@@ -123,15 +113,14 @@ const AdminProductEditPage = () => {
                     <Link to="/admin/products" className="back-link">
                         <i className="fas fa-arrow-left"></i> Back to Products
                     </Link>
-                    <h1>Edit Product</h1>
+                    <h1>Create New Product</h1>
                 </header>
 
                 {loading ? (
-                    <div className="loading">Loading product data...</div>
+                    <div className="loading">Loading...</div>
                 ) : (
                     <div className="edit-form-container glass-panel">
                         {error && <div className="error-message">{error}</div>}
-                        {successUpdate && <div className="success-message">Product updated successfully! Redirecting...</div>}
 
                         <form onSubmit={submitHandler} className="admin-form">
                             <div className="form-grid">
@@ -158,7 +147,7 @@ const AdminProductEditPage = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Image URL</label>
+                                    <label>Image</label>
                                     <input
                                         type="text"
                                         placeholder="Enter image URL"
@@ -244,9 +233,9 @@ const AdminProductEditPage = () => {
                                 <button
                                     type="submit"
                                     className="btn btn-primary submit-btn"
-                                    disabled={loadingUpdate}
+                                    disabled={loadingCreate}
                                 >
-                                    {loadingUpdate ? 'Updating...' : 'Update Product'}
+                                    {loadingCreate ? 'Creating...' : 'Create Product'}
                                 </button>
                             </div>
                         </form>
@@ -257,4 +246,4 @@ const AdminProductEditPage = () => {
     );
 };
 
-export default AdminProductEditPage;
+export default AdminProductCreatePage;

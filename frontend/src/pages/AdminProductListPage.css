@@ -12,6 +12,11 @@
     font-weight: 600;
 }
 
+.header-actions {
+    display: flex;
+    gap: 1rem;
+}
+
 .admin-table-container {
     overflow-x: auto;
     padding: 1rem;

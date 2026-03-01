@@ -78,3 +78,20 @@
     border-radius: 8px;
     margin-bottom: 1.5rem;
 }
+
+@media (max-width: 768px) {
+
+    .admin-table th,
+    .admin-table td {
+        padding: 0.8rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .admin-table {
+        min-width: 600px;
+    }
+
+    .actions-cell {
+        gap: 0.4rem;
+    }
+}

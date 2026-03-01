@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import Loader from '../components/common/Loader';
 import './OrderSuccessPage.css';
 
 const OrderSuccessPage = () => {
@@ -33,7 +34,7 @@ const OrderSuccessPage = () => {
         }
     }, [id, userInfo]);
 
-    if (loading) return <div className="loader-container"><div className="loader"></div></div>;
+    if (loading) return <Loader fullPage size="large" />;
     if (error) return <div className="error-container glass-panel"><h2>Error</h2><p>{error}</p></div>;
 
     return (

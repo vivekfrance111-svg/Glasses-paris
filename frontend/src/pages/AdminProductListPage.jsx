@@ -77,9 +77,14 @@ const AdminProductListPage = () => {
                         <h1>Product Management</h1>
                         <p>Total Products: {products.length}</p>
                     </div>
-                    <button className="btn btn-primary create-btn" onClick={createProductHandler} disabled={loadingCreate}>
-                        {loadingCreate ? 'Creating...' : <><i className="fas fa-plus"></i> Create Product</>}
-                    </button>
+                    <div className="header-actions">
+                        <button className="btn btn-secondary create-btn" onClick={() => navigate('/admin/product/create')}>
+                            <i className="fas fa-plus"></i> New Product
+                        </button>
+                        <button className="btn btn-primary create-btn" onClick={createProductHandler} disabled={loadingCreate}>
+                            {loadingCreate ? 'Creating...' : <><i className="fas fa-magic"></i> Create Sample</>}
+                        </button>
+                    </div>
                 </header>
 
                 {error && <div className="error-message">{error}</div>}

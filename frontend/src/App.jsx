@@ -10,6 +10,7 @@ import OrderSuccessPage from './pages/OrderSuccessPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProductListPage from './pages/AdminProductListPage';
+import AdminProductCreatePage from './pages/AdminProductCreatePage';
 import AdminProductEditPage from './pages/AdminProductEditPage';
 import AdminOrderListPage from './pages/AdminOrderListPage';
 import AdminUserListPage from './pages/AdminUserListPage';
@@ -39,6 +40,7 @@ function App() {
               <Route path="/admin" element={<AdminRoute />}>
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="products" element={<AdminProductListPage />} />
+                <Route path="product/create" element={<AdminProductCreatePage />} />
                 <Route path="product/:id/edit" element={<AdminProductEditPage />} />
                 <Route path="orders" element={<AdminOrderListPage />} />
                 <Route path="users" element={<AdminUserListPage />} />

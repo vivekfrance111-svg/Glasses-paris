@@ -101,3 +101,20 @@ ralph-done-7thb5
 
 ----------
 ralph-done-72n4r
+- [x] UI/UX Polish: Replaced raw `<div class="loader">` with shared `Loader` component in `OrderSuccessPage.jsx`.
+- [x] UI/UX Polish: Added skeleton table rows to `ProfilePage.jsx` for order history loading state.
+- [x] UI/UX Polish: Implemented mobile hamburger menu in `Header.jsx` with slide-out nav drawer, overlay, and body scroll lock.
+- [x] UI/UX Polish: Implemented mobile filter drawer in `ProductListingPage.jsx` with toggle button, overlay, and slide-out sidebar.
+- [x] UI/UX Polish: Added `btn-primary-sm` CSS class and `pageSlideIn` animation to `App.css`.
+- [x] UI/UX Polish: Added mobile responsive breakpoints to `ProfilePage.css`, `AdminOrderListPage.css`, `AdminUserListPage.css`, `AdminReviewListPage.css`.
+- [x] UI/UX Polish: Added page-enter fade animation to `Layout.jsx` (triggered on route change via location key).
+- [x] Build Verification: Vite production build succeeded (146 modules, 0 errors).
+
+----------
+- [x] Frontend (Product Creation): Built a dedicated `AdminProductCreatePage.jsx` for manual product entry.
+- [x] Backend Integration: Updated `productController.js` to support creating products with explicit data from `req.body`.
+- [x] Admin UX: Added "New Product" button and route to the admin product listing for streamlined inventory management.
+- [x] Validation: Logged in as Admin, created a new product "Validation Test Glass" with an image URL, and verified its presence on the public storefront and back-end API.
+
+----------
+ralph-done-vyh0g

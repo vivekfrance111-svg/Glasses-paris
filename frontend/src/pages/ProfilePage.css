@@ -104,3 +104,28 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 640px) {
+    .profile-container {
+        padding: 1.5rem 3%;
+    }
+
+    .profile-form-section,
+    .profile-orders-section {
+        padding: 1.5rem;
+    }
+
+    .profile-grid h2 {
+        font-size: 1.4rem;
+    }
+
+    .orders-table th,
+    .orders-table td {
+        padding: 0.8rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .orders-table th {
+        font-size: 0.7rem;
+    }
+}

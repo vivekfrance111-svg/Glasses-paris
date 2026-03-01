@@ -21,6 +21,31 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.filter-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-close-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color 0.2s;
+}
+
+.filter-close-btn:hover {
+    color: white;
+}
+
+.filter-close-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
 .filter-group {
     margin-bottom: 2rem;
 }
@@ -31,6 +56,40 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 1rem;
+}
+
+/* Mobile filter toggle button */
+.mobile-filter-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.mobile-filter-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.mobile-filter-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+/* Filter overlay */
+.filter-overlay {
+    display: none;
 }
 
 /* ── Color Buttons ───────────────────────────────── */
@@ -114,8 +173,62 @@
         grid-template-columns: 1fr;
     }
 
+    .mobile-filter-toggle {
+        display: inline-flex;
+    }
+
+    .filter-close-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .plp-sidebar {
-        display: none;
-        /* In a real app, implement a mobile filter drawer */
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 300px;
+        max-width: 85vw;
+        height: 100vh;
+        z-index: 1100;
+        border-radius: 0;
+        background: var(--bg-secondary);
+        border-right: 1px solid var(--glass-border);
+        box-shadow: 8px 0 32px rgba(0, 0, 0, 0.4);
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto;
+        padding: 1.5rem;
+    }
+
+    .plp-sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .filter-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 1050;
+    }
+
+    .plp-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .sort-dropdown {
+        width: 100%;
+    }
+
+    .sort-dropdown .custom-select {
+        min-width: 0;
+        flex: 1;
     }
 }

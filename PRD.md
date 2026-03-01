@@ -55,3 +55,22 @@ The Ralph Loop must complete the following checklist to build the Shopping Cart 
 - [ ] **Backend (Order DB):** Create the `orderModel.js` and `orderController.js` to handle saving user orders to MongoDB.
 - [ ] **Frontend (Checkout Page):** Build a `CheckoutPage.jsx` with a form for Shipping Details and an Order Summary.
 - [ ] **Validation:** The Loop should finish ONLY when the Browser Agent can successfully add an item to the cart, open the cart drawer, click checkout, and submit a dummy order.
+
+---
+## CURRENT EXECUTION: Phase 5 Action Items (Final Polish)
+The Ralph Loop must complete the following checklist to finalize the application for deployment.
+
+- [ ] **Backend (Reviews):** Create the `reviewModel.js` and endpoints (`POST /api/products/:id/reviews`) to allow authenticated users to leave ratings/comments.
+- [ ] **Backend (User Orders):** Expose a `GET /api/orders/myorders` endpoint so users can fetch their past transactions.
+- [ ] **Frontend (Customer Portal):** Build a `ProfilePage.jsx` where users can view their details and a table of their Order History.
+- [ ] **Frontend (Reviews UI):** Add a sleek Reviews & Ratings section to the `ProductDetailsPage.jsx` (including a star-rating input).
+- [ ] **UI/UX Polish:** Add global loading spinners (or skeleton loaders) during API fetching, and ensure mobile responsiveness across the entire app.
+- [ ] **Validation:** The Loop should finish ONLY when the Browser Agent logs in, navigates to their profile to view a past order, leaves a 5-star review on a product, and verifies the review renders on the page.
+
+---
+## CURRENT EXECUTION: Admin Dashboard & Product Management
+- [ ] **Backend (Admin Auth):** Create an `isAdmin` middleware in `authController.js` to protect admin-only routes. Update my specific user document in MongoDB to have `isAdmin: true`.
+- [ ] **Backend (Product Upload):** Implement an image upload solution (like Multer for local storage, or Cloudinary/AWS S3) for the `POST /api/products` route.
+- [ ] **Frontend (Admin UI):** Build an `AdminDashboard.jsx` accessible only to admin users.
+- [ ] **Frontend (Product Creation):** Build a `ProductCreate.jsx` form where the admin can type the product name, price, brand, stock count, and upload an image. Connect this to the backend to save directly to MongoDB.
+- [ ] **Validation:** The Loop finishes only when the Browser Agent logs in as an admin, navigates to the dashboard, creates a new product with an image, and verifies it appears on the public storefront.

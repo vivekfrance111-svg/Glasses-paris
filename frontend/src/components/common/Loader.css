@@ -1,0 +1,62 @@
+.loader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    width: 100%;
+}
+
+.loader-container.full-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+}
+
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+}
+
+/* Spinner Sizes */
+.spinner.small {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+}
+
+.spinner.medium {
+    width: 48px;
+    height: 48px;
+    border-width: 3px;
+}
+
+.spinner.large {
+    width: 80px;
+    height: 80px;
+    border-width: 4px;
+}
+
+/* Spinner Colors */
+.spinner.gold {
+    border-top: 3px solid var(--accent-highlight);
+}
+
+.spinner.white {
+    border-top: 3px solid var(--accent-primary);
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

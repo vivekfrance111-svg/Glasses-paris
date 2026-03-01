@@ -6,7 +6,6 @@
     z-index: 1000;
     padding: 0.75rem 0;
     border-radius: 1.25rem !important;
-    /* Override glass-panel default if needed */
 }
 
 .header-content {
@@ -165,12 +164,6 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
-@media (max-width: 992px) {
-    .nav {
-        display: none;
-    }
-}
-
 .auth-links {
     display: flex;
     gap: 1rem;
@@ -203,4 +196,221 @@
 .register-link-btn:hover {
     background-color: #c5a037;
     transform: translateY(-2px);
+}
+
+/* ── Hamburger Button ──────────────────────────── */
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    padding: 0.4rem;
+    font-size: 1.4rem;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.hamburger-btn svg {
+    width: 26px;
+    height: 26px;
+    stroke-width: 1.8;
+}
+
+.hamburger-btn:hover {
+    color: var(--accent);
+    transform: scale(1.1);
+}
+
+/* ── Mobile Nav Overlay ────────────────────────── */
+.mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1100;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.mobile-nav-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── Mobile Nav Drawer ─────────────────────────── */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    max-width: 85vw;
+    height: 100vh;
+    background: var(--bg-secondary);
+    border-left: 1px solid var(--glass-border);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
+    z-index: 1200;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.mobile-nav.open {
+    transform: translateX(0);
+}
+
+.mobile-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobile-nav-header h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.mobile-nav-links a {
+    display: block;
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.mobile-nav-links a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent);
+    padding-left: 1.3rem;
+}
+
+.mobile-nav-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 1.5rem 0;
+}
+
+.mobile-nav-user {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.mobile-nav-user a {
+    display: block;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.mobile-nav-user a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent);
+}
+
+.mobile-logout-btn {
+    display: block;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #ef4444;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.mobile-logout-btn:hover {
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.mobile-nav-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mobile-auth-btn {
+    display: block;
+    text-align: center;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+/* ── Responsive ────────────────────────────────── */
+@media (max-width: 992px) {
+    .nav {
+        display: none;
+    }
+
+    .desktop-auth {
+        display: none;
+    }
+
+    .hamburger-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-nav-overlay {
+        display: block;
+    }
+
+    .mobile-nav {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        top: 0.5rem;
+        left: 0.5rem;
+        right: 0.5rem;
+    }
+
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+
+    .header-actions {
+        gap: 0.8rem;
+    }
+
+    .search-btn {
+        display: none;
+    }
 }

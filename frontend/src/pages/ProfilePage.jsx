@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Loader from '../components/common/Loader';
+import Skeleton from '../components/common/Skeleton';
 import axios from 'axios';
 import './ProfilePage.css';
 
@@ -120,7 +122,32 @@ const ProfilePage = () => {
                 <div className="profile-orders-section glass-panel">
                     <h2>My Orders</h2>
                     {loading ? (
-                        <div className="loader"></div>
+                        <div className="orders-table-container">
+                            <table className="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>DATE</th>
+                                        <th>TOTAL</th>
+                                        <th>PAID</th>
+                                        <th>DELIVERED</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[1, 2, 3].map(i => (
+                                        <tr key={i}>
+                                            <td><Skeleton width="80px" height="16px" /></td>
+                                            <td><Skeleton width="90px" height="16px" /></td>
+                                            <td><Skeleton width="60px" height="16px" /></td>
+                                            <td><Skeleton width="50px" height="24px" borderRadius="6px" /></td>
+                                            <td><Skeleton width="40px" height="24px" borderRadius="6px" /></td>
+                                            <td><Skeleton width="65px" height="30px" borderRadius="6px" /></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     ) : orders.length === 0 ? (
                         <p>No orders found. <Link to="/products">Start shopping</Link></p>
                     ) : (

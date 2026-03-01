@@ -101,19 +101,33 @@ const deleteProduct = async (req, res) => {
 // @access  Private/Admin
 const createProduct = async (req, res) => {
     try {
-        const product = new Product({
-            name: 'Sample Name',
-            price: 0,
+        const {
+            name,
+            price,
+            description,
+            image,
+            brand,
+            category,
+            countInStock,
+            frameStyle,
+            color
+        } = req.body;
+
+        const productData = {
+            name: name || 'Sample Name',
+            price: price || 0,
             user: req.user._id,
-            image: '/images/sample.jpg',
-            brand: 'Sample Brand',
-            category: '65dbd6a782a20336a8e833f4', // Placeholder Category ID - should ideally fetch a real one or handle creation
-            countInStock: 0,
+            image: image || '/images/sample.jpg',
+            brand: brand || 'Sample Brand',
+            category: category || '65dbd6a782a20336a8e833f4', // Placeholder Category ID
+            countInStock: countInStock || 0,
             numReviews: 0,
-            description: 'Sample description',
-            frameStyle: 'Wayfarer',
-            color: 'Black'
-        });
+            description: description || 'Sample description',
+            frameStyle: frameStyle || 'Wayfarer',
+            color: color || 'Black'
+        };
+
+        const product = new Product(productData);
 
         const createdProduct = await product.save();
         res.status(201).json(createdProduct);

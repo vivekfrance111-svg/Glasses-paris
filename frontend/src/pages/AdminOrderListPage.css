@@ -112,3 +112,21 @@
     border-radius: 8px;
     margin-bottom: 1.5rem;
 }
+
+@media (max-width: 768px) {
+
+    .admin-table th,
+    .admin-table td {
+        padding: 0.8rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .admin-table {
+        min-width: 600px;
+    }
+
+    .status-tag {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.5rem;
+    }
+}
