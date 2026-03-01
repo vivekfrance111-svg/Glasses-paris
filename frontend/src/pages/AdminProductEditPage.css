@@ -1,0 +1,107 @@
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #fff;
+}
+
+.edit-form-container {
+    padding: 2.5rem;
+    border-radius: 20px;
+    max-width: 900px;
+}
+
+.admin-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.admin-form .full-width {
+    grid-column: span 2;
+}
+
+.admin-form label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 0.5rem;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.admin-form input:focus,
+.admin-form select:focus,
+.admin-form textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+.admin-form select option {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    padding: 1rem 3rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.success-message {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+@media (max-width: 768px) {
+    .admin-form .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-form .full-width {
+        grid-column: span 1;
+    }
+
+    .edit-form-container {
+        padding: 1.5rem;
+    }
+}

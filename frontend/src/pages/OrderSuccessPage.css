@@ -1,0 +1,119 @@
+.order-success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    min-height: 80vh;
+}
+
+.success-card {
+    max-width: 800px;
+    width: 100%;
+    padding: 3rem;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.success-card h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #fff, #646cff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.order-number {
+    font-size: 1rem;
+    opacity: 0.6;
+    margin-bottom: 2rem;
+    font-family: monospace;
+}
+
+.order-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    text-align: left;
+    margin: 3rem 0;
+}
+
+.details-box h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.details-box p {
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+}
+
+.status-paid {
+    color: #4ade80;
+    font-weight: 600;
+}
+
+.status-pending {
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+.ordered-items {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 2rem;
+    padding-top: 2rem;
+    text-align: left;
+}
+
+.ordered-items h3 {
+    margin-bottom: 1.5rem;
+}
+
+.order-item-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+.order-total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.success-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+@media (max-width: 640px) {
+    .order-details-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,133 @@
+.product-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-btn {
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.admin-table-container {
+    overflow-x: auto;
+    padding: 1rem;
+    border-radius: 20px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th {
+    padding: 1.2rem 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+    vertical-align: middle;
+}
+
+.dim-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-family: monospace;
+}
+
+.product-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+}
+
+.mini-thumb {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.price-cell {
+    font-weight: 700;
+    color: var(--accent-color, #ff4d4d);
+}
+
+.stock-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.in-stock {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+}
+
+.out-of-stock {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-icon.edit {
+    color: #2196f3;
+}
+
+.btn-icon.edit:hover {
+    background: rgba(33, 150, 243, 0.15);
+    transform: translateY(-2px);
+}
+
+.btn-icon.delete {
+    color: #f44336;
+}
+
+.btn-icon.delete:hover {
+    background: rgba(244, 67, 54, 0.15);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .product-list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .create-btn {
+        width: 100%;
+    }
+}

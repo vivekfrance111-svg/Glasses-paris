@@ -1,0 +1,87 @@
+- [x] Database schema design (Users, Products, Categories, Orders, Reviews) completed.
+  - Created Mongoose models: User, Product, Category, Order, Review in backend/models.
+  - Initialized backend/package.json with dependencies (mongoose, bcryptjs, express, etc.).
+- [x] Developed basic API endpoints for Products and Categories.
+  - Implemented controllers and routes in backend.
+  - Mounted routes in server.js.
+  - Added data seeder scripts and sample data in backend/data.
+  - Cleaned up redundant model files in backend/models.
+- [x] Established base design system and layout structure in the frontend.
+- [x] Implemented JWT-based User Authentication.
+  - Created User controller with login, register, and profile functions.
+  - Developed authentication middleware for protecting routes.
+  - Integrated jsonwebtoken for secure session management.
+  - Mounted user routes in backend/server.js.
+- [x] Completed Core Frontend Layouts and Home Page Integration.
+  - Extracted Footer and Hero into separate components.
+  - Implemented dynamic product fetching in App.jsx using Axios.
+  - Created reusable ProductCard component with glassmorphism styling.
+  - Refined design tokens and global styles in index.css and App.css.
+  - Installed frontend dependencies: axios, react-router-dom.
+- [x] Implemented Product Catalog and Discovery Features.
+  - Set up React Router for multi-page navigation (Home, PLP, PDP).
+  - Enhanced backend `getProducts` API with searching, filtering (category, style, color, price), and pagination.
+  - Developed dynamic Product Listing Page (PLP) with sidebar filters and sorting.
+  - Developed Product Detail Page (PDP) with lens option selection and dynamic pricing.
+  - Integrated URL search parameters for persistent and shareable filtering states.
+  - Updated Navbar and ProductCard components for seamless routing.
+- [x] Developed Shopping Cart Engine.
+  - Created global `CartContext` with React Context API.
+  - Implemented persistent storage (Local Storage) for guest cart support.
+  - Built premium slide-out `CartDrawer` with real-time total updates and item management (add/remove/qty).
+  - Integrated "Add to Bag" functionality across product pages.
+  - Synchronized cart count and state across the Header and Cart Drawer.
+- [x] Implemented Frontend User Authentication and Backend Order Structure.
+    - Created `AuthContext` for global user state management and persistence.
+    - Developed premium `LoginPage` and `RegisterPage` with glassmorphism styling.
+    - Integrated authentication status and user dropdown into the `Header` component.
+    - Implemented `Order` model, controller, and routes for transaction management.
+    - Cleaned up redundant Mongoose model files to maintain a consistent `*.js` naming convention.
+    - Registered order routes in `server.js`.
+- [x] Developed End-to-End Checkout Journey and Order Success Experience.
+    - Built premium `CheckoutPage` with multi-step-ready form (Shipping, Payment selection, Order Summary).
+    - Created `OrderSuccessPage` to display dynamic order confirmation details fetching from backend.
+    - Integrated checkout navigation into the `CartDrawer`.
+    - Implemented logic for tax and shipping calculations during checkout.
+    - Established backend order persistence and data population (user details in order).
+- [x] Implemented Customer Dashboard and Profile Management.
+    - Developed `ProfilePage` with secure profile update functionality.
+    - Integrated "My Orders" history table with status badges and deep links to order details.
+    - Enhanced `userController` with profile update logic and secure password masking.
+    - Verified authentication-gated access to user-specific data.
+- [x] Implemented Product Reviews and Rating System.
+    - Created `Review` model and connected it to the `Product` model.
+    - Developed `reviewController` and registered `reviewRoutes` in the backend.
+    - Integrated review submission and display on the `ProductDetailsPage`.
+    - Added premium glassmorphism styling for reviews and submission forms.
+    - Ensured only authenticated users can submit reviews.
+
+- [x] Implemented Admin Dashboard Infrastructure and Overview Dashboard.
+    - Added `getOrders` and `getOrderStats` admin controllers to the backend.
+    - Developed comprehensive admin user management controllers (`getUsers`, `deleteUser`, etc.).
+    - Registered secure admin-only routes for orders and users on the backend.
+    - Built premium `AdminDashboard` page with real-time KPI statistics (Revenue, Orders, Status).
+    - Created reusable `AdminSidebar` component for streamlined admin navigation.
+    - Implemented `AdminRoute` specifically for guarding administrative frontend routes.
+    - Integrated dynamic Admin portal access into the main Navigation Header.
+
+- [x] Implemented Admin Inventory and Product Management.
+    - Added `createProduct`, `updateProduct`, and `deleteProduct` controllers to the backend.
+    - Registered admin-protected product management routes.
+    - Developed `AdminProductListPage` for viewing and deleting products with premium table styling.
+    - Developed `AdminProductEditPage` with a comprehensive form for updating product details and inventory.
+    - Integrated multi-page admin navigation for seamless inventory control.
+- [x] Implemented Admin Order Management and Processing.
+    - Enhanced `orderController` with `updateOrderStatus` for marking orders as Dispatched or Delivered.
+    - Registered secure admin-only order status update route.
+    - Developed premium `AdminOrderListPage` with real-time status updates and order tracking.
+    - Integrated Order Management into the Admin Sidebar and application routing.
+- [x] Implemented Admin User and Review Management.
+    - Added `getUsers`, `updateUser`, and `deleteUser` backend functionality.
+    - Expanded `reviewController` with `getAllReviews` and `deleteReview` for admin moderation.
+    - Developed premium `AdminUserListPage` for managing customer accounts and permissions.
+    - Developed `AdminReviewListPage` for moderating product reviews and ratings.
+    - Integrated User and Review management into the Admin Sidebar and application routing.
+
+----------
+ralph-done-p0s3n
