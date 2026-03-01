@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         try {
             setLoading(true);
             setError(null);
-            const { data } = await axios.post('/api/users/login', { email, password });
+            const { data } = await axios.post('/api/auth/login', { email, password });
             setUserInfo(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
         } catch (err) {
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         try {
             setLoading(true);
             setError(null);
-            const { data } = await axios.post('/api/users', { name, email, password });
+            const { data } = await axios.post('/api/auth/register', { name, email, password });
             setUserInfo(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
         } catch (err) {

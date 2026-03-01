@@ -163,6 +163,7 @@
 .btn-primary-sm {
     padding: 8px 16px;
     background: var(--accent-gold);
+    color: var(--text-on-accent);
     border: none;
     border-radius: 8px;
     font-size: 0.85rem;
@@ -173,4 +174,5 @@
 
 .btn-primary-sm:hover {
     background: #f1c40f;
+    color: var(--text-on-accent);
 }

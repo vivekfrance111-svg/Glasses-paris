@@ -1,8 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { FiChevronDown } from 'react-icons/fi';
 import axios from 'axios';
 import ProductCard from '../components/common/ProductCard';
 import './ProductListingPage.css';
+
+const CustomSelect = ({ value, options, onChange, placeholder = 'Select...' }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const ref = useRef(null);
+
+    const selectedLabel = options.find(o => o.value === value)?.label || placeholder;
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (ref.current && !ref.current.contains(e.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleSelect = (val) => {
+        onChange(val);
+        setIsOpen(false);
+    };
+
+    return (
+        <div className={`custom-select ${isOpen ? 'open' : ''}`} ref={ref}>
+            <button
+                className="custom-select-trigger"
+                onClick={() => setIsOpen(!isOpen)}
+                type="button"
+            >
+                <span className={value ? '' : 'placeholder'}>{selectedLabel}</span>
+                <FiChevronDown className={`select-arrow ${isOpen ? 'rotated' : ''}`} />
+            </button>
+            {isOpen && (
+                <ul className="custom-select-options glass">
+                    {options.map(opt => (
+                        <li
+                            key={opt.value}
+                            className={`custom-select-option ${value === opt.value ? 'active' : ''}`}
+                            onClick={() => handleSelect(opt.value)}
+                        >
+                            {opt.label}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+};
 
 const ProductListingPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -66,6 +115,22 @@ const ProductListingPage = () => {
         setSearchParams({});
     };
 
+    const frameStyleOptions = [
+        { value: '', label: 'All Styles' },
+        { value: 'Rectangular', label: 'Rectangular' },
+        { value: 'Round', label: 'Round' },
+        { value: 'Aviator', label: 'Aviator' },
+        { value: 'Wayfarer', label: 'Wayfarer' },
+        { value: 'Cat Eye', label: 'Cat Eye' },
+    ];
+
+    const sortOptions = [
+        { value: 'newest', label: 'Newest Arrivals' },
+        { value: 'price-low', label: 'Price: Low to High' },
+        { value: 'price-high', label: 'Price: High to Low' },
+        { value: 'rating', label: 'Customer Rating' },
+    ];
+
     return (
         <div className="plp-container container section">
             <div className="plp-layout">
@@ -78,17 +143,12 @@ const ProductListingPage = () => {
 
                     <div className="filter-group">
                         <h4>Frame Style</h4>
-                        <select
+                        <CustomSelect
                             value={frameStyleQuery}
-                            onChange={(e) => updateFilter('frameStyle', e.target.value)}
-                        >
-                            <option value="">All Styles</option>
-                            <option value="Rectangular">Rectangular</option>
-                            <option value="Round">Round</option>
-                            <option value="Aviator">Aviator</option>
-                            <option value="Wayfarer">Wayfarer</option>
-                            <option value="Cat Eye">Cat Eye</option>
-                        </select>
+                            options={frameStyleOptions}
+                            onChange={(val) => updateFilter('frameStyle', val)}
+                            placeholder="All Styles"
+                        />
                     </div>
 
                     <div className="filter-group">
@@ -134,12 +194,12 @@ const ProductListingPage = () => {
                         </div>
                         <div className="sort-dropdown">
                             <label>Sort by:</label>
-                            <select value={sort} onChange={(e) => updateFilter('sort', e.target.value)}>
-                                <option value="newest">Newest Arrivals</option>
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                                <option value="rating">Customer Rating</option>
-                            </select>
+                            <CustomSelect
+                                value={sort}
+                                options={sortOptions}
+                                onChange={(val) => updateFilter('sort', val)}
+                                placeholder="Newest Arrivals"
+                            />
                         </div>
                     </div>
 

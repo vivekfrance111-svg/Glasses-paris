@@ -33,16 +33,102 @@
     margin-bottom: 1rem;
 }
 
-.filter-group select {
+/* ── Custom Select Component ───────────────────── */
+.custom-select {
+    position: relative;
     width: 100%;
-    padding: 0.75rem;
+}
+
+.custom-select-trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
-    color: var(--text-primary);
-    outline: none;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
 }
 
+.custom-select-trigger:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.custom-select.open .custom-select-trigger {
+    border-color: var(--accent-gold);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.custom-select-trigger .placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.select-arrow {
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.4);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+}
+
+.select-arrow.rotated {
+    transform: rotate(180deg);
+}
+
+.custom-select-options {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem;
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+    animation: dropdownFadeIn 0.15s ease;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-select-option {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.custom-select-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--accent-gold);
+}
+
+.custom-select-option.active {
+    color: var(--accent-gold);
+    background: rgba(212, 175, 55, 0.1);
+    font-weight: 600;
+}
+
+/* ── Color Buttons ───────────────────────────────── */
 .color-options {
     display: flex;
     flex-wrap: wrap;
@@ -63,10 +149,11 @@
 }
 
 .color-btn.active {
-    border-color: var(--accent-primary);
+    border-color: var(--accent-gold);
     transform: scale(1.2);
 }
 
+/* ── Price Inputs ────────────────────────────────── */
 .price-inputs {
     display: flex;
     align-items: center;
@@ -79,10 +166,16 @@
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
-    color: var(--text-primary);
+    color: var(--text-light);
     font-size: 0.85rem;
 }
 
+.price-inputs input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+}
+
+/* ── Main Content Header ──────────────────────────── */
 .plp-header {
     display: flex;
     justify-content: space-between;
@@ -103,16 +196,14 @@
 .sort-dropdown label {
     font-size: 0.9rem;
     color: var(--text-secondary);
+    white-space: nowrap;
 }
 
-.sort-dropdown select {
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    color: var(--text-primary);
+.sort-dropdown .custom-select {
+    min-width: 190px;
 }
 
+/* ── Responsive ───────────────────────────────────── */
 @media (max-width: 768px) {
     .plp-layout {
         grid-template-columns: 1fr;

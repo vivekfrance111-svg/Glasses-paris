@@ -52,11 +52,27 @@
 
 .icon-btn {
     font-size: 1.2rem;
-    transition: transform var(--transition-fast);
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+
+.icon-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.8;
 }
 
 .icon-btn:hover {
-    transform: scale(1.1);
+    color: var(--accent);
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.4));
 }
 
 .cart-btn {
@@ -88,28 +104,46 @@
     font-size: 0.9rem !important;
     font-weight: 600;
     color: var(--accent);
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.75rem;
     border: 1px solid rgba(212, 175, 55, 0.3);
     border-radius: 8px;
+    gap: 4px;
+}
+
+.dropdown-arrow {
+    width: 14px !important;
+    height: 14px !important;
+    transition: transform 0.25s ease;
+    margin-left: 2px;
+}
+
+.dropdown-arrow.open {
+    transform: rotate(180deg);
 }
 
 .dropdown-content {
-    display: none;
+    display: flex;
+    flex-direction: column;
     position: absolute;
     right: 0;
     top: 100%;
-    min-width: 160px;
+    min-width: 170px;
     margin-top: 0.5rem;
     padding: 0.5rem;
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     z-index: 1001;
     overflow: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.user-dropdown:hover .dropdown-content {
-    display: flex;
-    flex-direction: column;
+.dropdown-content.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 .dropdown-content a,
@@ -135,4 +169,38 @@
     .nav {
         display: none;
     }
+}
+
+.auth-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.login-link-btn {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.login-link-btn:hover {
+    color: var(--accent);
+}
+
+.register-link-btn {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: black;
+    background-color: var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.register-link-btn:hover {
+    background-color: #c5a037;
+    transform: translateY(-2px);
 }

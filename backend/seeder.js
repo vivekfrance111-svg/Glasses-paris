@@ -36,12 +36,11 @@ const importData = async () => {
         const womenCategory = createdCategories.find(c => c.name === 'Women')._id;
         const unisexCategory = createdCategories.find(c => c.name === 'Unisex')._id;
 
-        const sampleProducts = products.map((product, index) => {
-            let category;
-            if (index === 0) category = menCategory;
-            else if (index === 1) category = womenCategory;
-            else category = unisexCategory;
+        const categoryMap = ['Men', 'Women', 'Unisex', 'Sunglasses', 'Women', 'Men', 'Sunglasses', 'Unisex'];
 
+        const sampleProducts = products.map((product, index) => {
+            const catName = categoryMap[index % categoryMap.length];
+            const category = createdCategories.find(c => c.name === catName)._id;
             return { ...product, category };
         });
 

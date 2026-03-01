@@ -13,11 +13,18 @@
   --accent-gold: var(--accent-highlight);
   --accent-interactive: #3b82f6;
 
+  /* Aliases used across components */
+  --accent: var(--accent-highlight);
+  --accent-color: var(--accent-highlight);
+  --bg-color: var(--bg-primary);
+
   /* Text colors */
   --text-main: var(--accent-primary);
   --text-muted: var(--accent-muted);
   --text-light: #ffffff;
   --text-dark: #0a0a0a;
+  --text-on-accent: #121212;
+  /* Dark text for gold/accent backgrounds */
 
   /* Surface */
   --bg-dark: var(--bg-primary);
@@ -103,7 +110,7 @@ a:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
   background: var(--accent-highlight);
-  color: #000;
+  color: var(--text-on-accent);
 }
 
 /* Layout */

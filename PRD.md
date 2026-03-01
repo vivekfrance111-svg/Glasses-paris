@@ -31,3 +31,16 @@ A premium, full-stack e-commerce web application for eyewear (prescription glass
 - Third-party seller marketplace (Multi-vendor capabilities).
 - Live AR virtual try-on (slated for future phases).
 - International multi-currency support.
+
+---
+
+## CURRENT EXECUTION: Phase 2 Action Items
+The Ralph Loop must complete the following checklist. Do not stop looping until all items are successfully implemented and verified.
+
+- [ ] **Backend (Database):** Configure the MongoDB connection in the backend using the `.env` variables.
+- [ ] **Backend (Auth Logic):** Create `authController.js` using `bcrypt` for password hashing and `jsonwebtoken` (JWT) for session management.
+- [ ] **Backend (API Routes):** Build and expose `POST /api/auth/register` and `POST /api/auth/login` endpoints.
+- [ ] **Frontend (UI Components):** Build a responsive `Header.jsx` containing the logo and Login/Register buttons. 
+- [ ] **Frontend (Pages):** Build `LoginPage.jsx` and `RegisterPage.jsx` using the existing Vanilla CSS glassmorphism design tokens.
+- [ ] **Frontend (Integration):** Connect the React login/register forms to the Node.js backend endpoints.
+- [ ] **Validation (Crucial):** Use the Antigravity Browser Agent to fill out the Registration form, submit it, and verify that the user is successfully created in the database and a JWT token is saved in the browser's LocalStorage.

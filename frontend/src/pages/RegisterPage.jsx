@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import './LoginPage.css'; // Reusing Login styles for consistency
 
@@ -8,6 +9,8 @@ const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [message, setMessage] = useState(null);
 
     const navigate = useNavigate();
@@ -70,24 +73,44 @@ const RegisterPage = () => {
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input
-                            type="password"
-                            placeholder="Enter password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                        <div className="password-input-wrapper">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Enter password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle-btn"
+                                onClick={() => setShowPassword(!showPassword)}
+                                tabIndex={-1}
+                            >
+                                {showPassword ? <FiEyeOff /> : <FiEye />}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="form-group">
                         <label>Confirm Password</label>
-                        <input
-                            type="password"
-                            placeholder="Confirm password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
+                        <div className="password-input-wrapper">
+                            <input
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                placeholder="Confirm password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle-btn"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                tabIndex={-1}
+                            >
+                                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                            </button>
+                        </div>
                     </div>
 
                     <button type="submit" className="login-button" disabled={loading}>

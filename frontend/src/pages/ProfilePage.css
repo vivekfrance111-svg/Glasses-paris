@@ -87,6 +87,7 @@
 .btn-detail:hover {
     background: var(--accent-color);
     border-color: var(--accent-color);
+    color: var(--text-on-accent);
 }
 
 .success-message {
