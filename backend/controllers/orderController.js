@@ -1,4 +1,5 @@
 import Order from '../models/Order.js';
+import Product from '../models/Product.js';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -213,21 +214,65 @@ const updateOrderStatus = async (req, res) => {
 // @route   POST /api/orders/create-payment-intent
 // @access  Private
 const createPaymentIntent = async (req, res) => {
-    const { totalPrice } = req.body;
+    const { orderItems } = req.body;
+
+    if (!orderItems || orderItems.length === 0) {
+        return res.status(400).json({ message: 'No items in order' });
+    }
 
     try {
+        let itemsPrice = 0;
+
+        // Recalculate items price on server side for security
+        for (const item of orderItems) {
+            const product = await Product.findById(item.product);
+
+            if (!product) {
+                // If MongoDB is unavailable in development, try to find in mock data or use a fallback
+                if (process.env.NODE_ENV === 'development' && !mongoose.connection.readyState) {
+                    // Fallback for mock environments if necessary, but strictly we should error in enterprise apps
+                    // For now, let's treat it as an error as per Phase 6 requirements
+                    return res.status(404).json({ message: `Product not found: ${item.product}` });
+                }
+                return res.status(404).json({ message: `Product not found: ${item.product}` });
+            }
+
+            // Calculate price based on DB product price + lens option price
+            const lensOption = product.lensOptions.find(l => l.lensType === item.lensOptions?.lensType);
+            const additionalPrice = lensOption ? lensOption.additionalPrice : 0;
+            const itemTotal = (product.price + additionalPrice) * item.qty;
+
+            itemsPrice += itemTotal;
+        }
+
+        // Apply business logic for shipping and tax
+        // Shipping is free over $100, otherwise $10
+        const calculatedShippingPrice = itemsPrice > 100 ? 0 : 10;
+        // Tax is a flat 10%
+        const calculatedTaxPrice = itemsPrice * 0.1;
+        const totalPrice = itemsPrice + calculatedShippingPrice + calculatedTaxPrice;
+
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(totalPrice * 100), // Stripe expects amount in cents
             currency: 'usd',
             automatic_payment_methods: {
                 enabled: true,
             },
+            metadata: {
+                integration_check: 'accept_a_payment',
+                // Adding items to metadata can help with reconciliation later
+                order_items_count: orderItems.length
+            }
         });
 
         res.send({
             clientSecret: paymentIntent.client_secret,
+            // Also returning the calculated prices can help the frontend stay in sync
+            // but the payment intent is the source of truth for the charge.
+            totalPrice: totalPrice.toFixed(2)
         });
     } catch (error) {
+        console.error('Stripe Payment Intent Error:', error);
         res.status(500).json({ message: error.message });
     }
 };
