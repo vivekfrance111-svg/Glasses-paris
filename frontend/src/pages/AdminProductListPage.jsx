@@ -23,7 +23,7 @@ const AdminProductListPage = () => {
                         Authorization: `Bearer ${userInfo.token}`,
                     },
                 };
-                const { data } = await axios.get('/api/products', config);
+                const { data } = await axios.get('/api/products?showAll=true', config);
                 setProducts(data.products);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
@@ -48,6 +48,21 @@ const AdminProductListPage = () => {
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
             }
+        }
+    };
+
+    const toggleVisibilityHandler = async (id, currentStatus) => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
+            await axios.put(`/api/products/${id}`, { isVisible: !currentStatus }, config);
+            setSuccessDelete(!successDelete); // Reuse this to refresh the list
+        } catch (err) {
+            setError(err.response?.data?.message || err.message);
         }
     };
 
@@ -102,12 +117,13 @@ const AdminProductListPage = () => {
                                     <th>CATEGORY</th>
                                     <th>BRAND</th>
                                     <th>STOCK</th>
+                                    <th>VISIBILITY</th>
                                     <th>ACTIONS</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {products.map((product) => (
-                                    <tr key={product._id}>
+                                    <tr key={product._id} className={!product.isVisible ? 'row-invisible' : ''}>
                                         <td className="dim-text">{product._id.substring(0, 8)}...</td>
                                         <td className="product-name-cell">
                                             <img src={product.image} alt={product.name} className="mini-thumb" />
@@ -120,6 +136,14 @@ const AdminProductListPage = () => {
                                             <span className={`stock-badge ${product.countInStock > 0 ? 'in-stock' : 'out-of-stock'}`}>
                                                 {product.countInStock}
                                             </span>
+                                        </td>
+                                        <td>
+                                            <button
+                                                className={`btn-status ${product.isVisible ? 'visible' : 'hidden'}`}
+                                                onClick={() => toggleVisibilityHandler(product._id, product.isVisible)}
+                                            >
+                                                {product.isVisible ? 'Visible' : 'Hidden'}
+                                            </button>
                                         </td>
                                         <td className="actions-cell">
                                             <button

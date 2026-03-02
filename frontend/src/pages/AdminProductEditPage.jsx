@@ -20,6 +20,7 @@ const AdminProductEditPage = () => {
     const [description, setDescription] = useState('');
     const [frameStyle, setFrameStyle] = useState('');
     const [color, setColor] = useState('');
+    const [isVisible, setIsVisible] = useState(true);
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -68,6 +69,7 @@ const AdminProductEditPage = () => {
                     setDescription(productData.description);
                     setFrameStyle(productData.frameStyle || '');
                     setColor(productData.color || '');
+                    setIsVisible(productData.isVisible !== undefined ? productData.isVisible : true);
                 }
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
@@ -101,7 +103,8 @@ const AdminProductEditPage = () => {
                     countInStock,
                     description,
                     frameStyle,
-                    color
+                    color,
+                    isVisible
                 },
                 config
             );
@@ -226,6 +229,17 @@ const AdminProductEditPage = () => {
                                         value={color}
                                         onChange={(e) => setColor(e.target.value)}
                                     />
+                                </div>
+
+                                <div className="form-group checkout-toggle">
+                                    <label className="toggle-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={isVisible}
+                                            onChange={(e) => setIsVisible(e.target.checked)}
+                                        />
+                                        <span className="toggle-text">Visible on storefront</span>
+                                    </label>
                                 </div>
                             </div>
 

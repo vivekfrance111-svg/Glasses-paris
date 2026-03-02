@@ -125,6 +125,46 @@
     transform: translateY(-2px);
 }
 
+.btn-status {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 80px;
+    text-align: center;
+}
+
+.btn-status.visible {
+    background: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+    border-color: rgba(33, 150, 243, 0.2);
+}
+
+.btn-status.visible:hover {
+    background: rgba(33, 150, 243, 0.2);
+}
+
+.btn-status.hidden {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-status.hidden:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.row-invisible {
+    opacity: 0.6;
+}
+
+.row-invisible .product-name-cell img {
+    filter: grayscale(100%);
+}
+
 @media (max-width: 768px) {
     .product-list-header {
         flex-direction: column;

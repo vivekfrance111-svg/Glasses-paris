@@ -19,6 +19,7 @@ const AdminProductCreatePage = () => {
     const [description, setDescription] = useState('');
     const [frameStyle, setFrameStyle] = useState('Classic');
     const [color, setColor] = useState('Black');
+    const [isVisible, setIsVisible] = useState(true);
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -92,7 +93,8 @@ const AdminProductCreatePage = () => {
                     countInStock,
                     description,
                     frameStyle,
-                    color
+                    color,
+                    isVisible
                 },
                 config
             );
@@ -215,6 +217,17 @@ const AdminProductCreatePage = () => {
                                         value={color}
                                         onChange={(e) => setColor(e.target.value)}
                                     />
+                                </div>
+
+                                <div className="form-group checkout-toggle">
+                                    <label className="toggle-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={isVisible}
+                                            onChange={(e) => setIsVisible(e.target.checked)}
+                                        />
+                                        <span className="toggle-text">Visible on storefront</span>
+                                    </label>
                                 </div>
                             </div>
 

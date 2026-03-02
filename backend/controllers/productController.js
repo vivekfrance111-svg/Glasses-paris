@@ -42,7 +42,18 @@ const getProducts = async (req, res) => {
             if (req.query.maxPrice) priceFilter.price.$lte = Number(req.query.maxPrice);
         }
 
-        const query = { ...keyword, ...categoryQuery, ...frameStyle, ...color, ...priceFilter };
+        const query = {
+            ...keyword,
+            ...categoryQuery,
+            ...frameStyle,
+            ...color,
+            ...priceFilter
+        };
+
+        // Only show visible products unless showAll is explicitly requested (e.g., from Admin list)
+        if (req.query.showAll !== 'true') {
+            query.isVisible = true;
+        }
 
         const count = await Product.countDocuments(query);
         const products = await Product.find(query)
@@ -110,7 +121,8 @@ const createProduct = async (req, res) => {
             category,
             countInStock,
             frameStyle,
-            color
+            color,
+            isVisible
         } = req.body;
 
         const productData = {
@@ -124,7 +136,8 @@ const createProduct = async (req, res) => {
             numReviews: 0,
             description: description || 'Sample description',
             frameStyle: frameStyle || 'Wayfarer',
-            color: color || 'Black'
+            color: color || 'Black',
+            isVisible: isVisible !== undefined ? isVisible : true
         };
 
         const product = new Product(productData);
@@ -165,6 +178,7 @@ const updateProduct = async (req, res) => {
             product.countInStock = countInStock || product.countInStock;
             product.frameStyle = frameStyle || product.frameStyle;
             product.color = color || product.color;
+            if (isVisible !== undefined) product.isVisible = isVisible;
 
             const updatedProduct = await product.save();
             res.json(updatedProduct);
