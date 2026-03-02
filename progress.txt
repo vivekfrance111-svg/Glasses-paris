@@ -118,3 +118,12 @@ ralph-done-72n4r
 
 ----------
 ralph-done-vyh0g
+----------
+Phase 6: Forgot Password Flow
+- [x] Verified existing `nodemailer` setup and backend reset logic (`userController.js`).
+- [x] Verified existing frontend UI pages (`ForgotPasswordPage.jsx`, `ResetPasswordPage.jsx`).
+- [x] Modified `sendEmail.js` locally to output mock emails to `mock_emails.txt` for development testing.
+- [x] Conducted full end-to-end browser agent validation: submitted forgotten password email, extracted secure token from local mock storage, and successfully submitted new password on reset screen.
+----------
+ralph-done-6phase
+- [x] Frontend (Stripe UI): Installed `@stripe/react-stripe-js` and `@stripe/stripe-js` in the frontend.
