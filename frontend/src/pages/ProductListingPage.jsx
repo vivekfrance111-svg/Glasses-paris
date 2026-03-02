@@ -105,7 +105,7 @@ const ProductListingPage = () => {
                     <div className="filter-header">
                         <h3>Filters</h3>
                         <div className="filter-header-actions">
-                            <button onClick={clearFilters} className="btn-text-sm">Clear All</button>
+                            <button onClick={clearFilters} className="clear-filters-btn">Clear All</button>
                             <button className="filter-close-btn" onClick={() => setMobileFilterOpen(false)}>
                                 <FiX />
                             </button>
