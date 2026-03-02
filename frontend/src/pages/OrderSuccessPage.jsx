@@ -20,7 +20,7 @@ const OrderSuccessPage = () => {
                         Authorization: `Bearer ${userInfo.token}`,
                     },
                 };
-                const { data } = await axios.get(`http://localhost:5000/api/orders/${id}`, config);
+                const { data } = await axios.get(`/api/orders/${id}`, config);
                 setOrder(data);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);

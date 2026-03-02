@@ -79,12 +79,16 @@ const CheckoutForm = () => {
                 },
             };
 
-            const totalPrice = cartTotal + (cartTotal > 100 ? 0 : 10) + (cartTotal * 0.1);
+            const orderItems = cartItems.map(item => ({
+                product: item._id,
+                qty: item.qty,
+                lensOptions: item.lensOptions
+            }));
 
             // 1. Create Payment Intent
             const { data: { clientSecret } } = await axios.post(
-                'http://localhost:5000/api/orders/create-payment-intent',
-                { totalPrice },
+                '/api/orders/create-payment-intent',
+                { orderItems },
                 config
             );
 
@@ -99,7 +103,7 @@ const CheckoutForm = () => {
                             line1: shippingAddress.address,
                             city: shippingAddress.city,
                             postal_code: shippingAddress.postalCode,
-                            country: 'US', // Hardcoded or from state
+                            country: shippingAddress.country || 'US', // Using user input or fallback
                         }
                     },
                 },
@@ -112,6 +116,10 @@ const CheckoutForm = () => {
             }
 
             if (paymentIntent.status === 'succeeded') {
+                const shippingPrice = cartTotal > 100 ? 0 : 10;
+                const taxPrice = cartTotal * 0.1;
+                const totalPrice = cartTotal + shippingPrice + taxPrice;
+
                 // 3. Create Order in Database
                 const orderData = {
                     orderItems: cartItems.map(item => ({
@@ -125,9 +133,9 @@ const CheckoutForm = () => {
                     shippingAddress,
                     paymentMethod,
                     itemsPrice: cartTotal,
-                    shippingPrice: cartTotal > 100 ? 0 : 10,
-                    taxPrice: cartTotal * 0.1,
-                    totalPrice: totalPrice,
+                    shippingPrice,
+                    taxPrice,
+                    totalPrice,
                     isPaid: true,
                     paidAt: new Date().toISOString(),
                     paymentResult: {
@@ -137,7 +145,7 @@ const CheckoutForm = () => {
                     }
                 };
 
-                const { data } = await axios.post('http://localhost:5000/api/orders', orderData, config);
+                const { data } = await axios.post('/api/orders', orderData, config);
 
                 setIsSuccess(true);
                 clearCart();

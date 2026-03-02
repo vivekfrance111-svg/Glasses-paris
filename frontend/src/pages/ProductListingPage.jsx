@@ -25,7 +25,7 @@ const ProductListingPage = () => {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                let url = `http://localhost:5000/api/products?`;
+                let url = `/api/products?`;
                 if (categoryQuery) url += `category=${categoryQuery}&`;
                 if (frameStyleQuery) url += `frameStyle=${frameStyleQuery}&`;
                 if (colorQuery) url += `color=${colorQuery}&`;

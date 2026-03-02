@@ -13,7 +13,7 @@ const HomePage = () => {
             try {
                 setLoading(true);
                 // Using relative path will work if we set proxy in vite.config.ts or use full URL
-                const { data } = await axios.get('http://localhost:5000/api/products');
+                const { data } = await axios.get('/api/products');
                 // Only show top 4 on home page
                 setProducts(data.products.slice(0, 4));
                 setLoading(false);

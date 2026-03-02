@@ -71,6 +71,10 @@ const LoginPage = () => {
                         </div>
                     </div>
 
+                    <div className="form-footer" style={{ textAlign: 'right', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+                        <Link to="/forgot-password" style={{ fontSize: '0.85rem' }}>Forgot Password?</Link>
+                    </div>
+
                     <button type="submit" className="login-button" disabled={loading}>
                         {loading ? 'Signing In...' : 'Sign In'}
                     </button>

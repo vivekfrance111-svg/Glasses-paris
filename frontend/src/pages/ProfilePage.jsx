@@ -37,7 +37,7 @@ const ProfilePage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            const { data } = await axios.get('http://localhost:5000/api/orders/myorders', config);
+            const { data } = await axios.get('/api/orders/myorders', config);
             setOrders(data);
         } catch (err) {
             setError(err.response?.data?.message || err.message);
