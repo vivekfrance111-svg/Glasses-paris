@@ -3,9 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import './CheckoutPage.css';
 
-const CheckoutPage = () => {
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
+const CheckoutForm = () => {
     const { cartItems, cartTotal, clearCart } = useCart();
     const { userInfo } = useAuth();
     const navigate = useNavigate();
@@ -20,23 +24,50 @@ const CheckoutPage = () => {
     const [paymentMethod, setPaymentMethod] = useState('Stripe');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
+
+    const stripe = useStripe();
+    const elements = useElements();
 
     useEffect(() => {
         if (!userInfo) {
             navigate('/login?redirect=checkout');
         }
-        if (cartItems.length === 0) {
+        if (cartItems.length === 0 && !isSuccess) {
             navigate('/products');
         }
-    }, [userInfo, cartItems, navigate]);
+    }, [userInfo, cartItems, navigate, isSuccess]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setShippingAddress({ ...shippingAddress, [name]: value });
     };
 
+    const cardElementOptions = {
+        style: {
+            base: {
+                color: "#ffffff",
+                fontFamily: '"Outfit", sans-serif',
+                fontSmoothing: "antialiased",
+                fontSize: "16px",
+                "::placeholder": {
+                    color: "rgba(255, 255, 255, 0.4)"
+                }
+            },
+            invalid: {
+                color: "#ef4444",
+                iconColor: "#ef4444"
+            }
+        }
+    };
+
     const submitHandler = async (e) => {
         e.preventDefault();
+
+        if (!stripe || !elements) {
+            return;
+        }
+
         setLoading(true);
         setError('');
 
@@ -48,27 +79,70 @@ const CheckoutPage = () => {
                 },
             };
 
-            const orderData = {
-                orderItems: cartItems.map(item => ({
-                    name: item.name,
-                    qty: item.qty,
-                    image: item.image,
-                    price: item.price + (item.lensOptions?.additionalPrice || 0),
-                    product: item._id,
-                    lensOptions: item.lensOptions
-                })),
-                shippingAddress,
-                paymentMethod,
-                itemsPrice: cartTotal,
-                shippingPrice: cartTotal > 100 ? 0 : 10, // Example shipping logic
-                taxPrice: cartTotal * 0.1, // 10% tax
-                totalPrice: cartTotal + (cartTotal > 100 ? 0 : 10) + (cartTotal * 0.1),
-            };
+            const totalPrice = cartTotal + (cartTotal > 100 ? 0 : 10) + (cartTotal * 0.1);
 
-            const { data } = await axios.post('http://localhost:5000/api/orders', orderData, config);
+            // 1. Create Payment Intent
+            const { data: { clientSecret } } = await axios.post(
+                'http://localhost:5000/api/orders/create-payment-intent',
+                { totalPrice },
+                config
+            );
 
-            clearCart();
-            navigate(`/order/${data._id}`);
+            // 2. Confirm Payment with Stripe
+            const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                    billing_details: {
+                        name: userInfo.name,
+                        email: userInfo.email,
+                        address: {
+                            line1: shippingAddress.address,
+                            city: shippingAddress.city,
+                            postal_code: shippingAddress.postalCode,
+                            country: 'US', // Hardcoded or from state
+                        }
+                    },
+                },
+            });
+
+            if (stripeError) {
+                setError(stripeError.message);
+                setLoading(false);
+                return;
+            }
+
+            if (paymentIntent.status === 'succeeded') {
+                // 3. Create Order in Database
+                const orderData = {
+                    orderItems: cartItems.map(item => ({
+                        name: item.name,
+                        qty: item.qty,
+                        image: item.image,
+                        price: item.price + (item.lensOptions?.additionalPrice || 0),
+                        product: item._id,
+                        lensOptions: item.lensOptions
+                    })),
+                    shippingAddress,
+                    paymentMethod,
+                    itemsPrice: cartTotal,
+                    shippingPrice: cartTotal > 100 ? 0 : 10,
+                    taxPrice: cartTotal * 0.1,
+                    totalPrice: totalPrice,
+                    isPaid: true,
+                    paidAt: new Date().toISOString(),
+                    paymentResult: {
+                        id: paymentIntent.id,
+                        status: paymentIntent.status,
+                        email_address: userInfo.email
+                    }
+                };
+
+                const { data } = await axios.post('http://localhost:5000/api/orders', orderData, config);
+
+                setIsSuccess(true);
+                clearCart();
+                navigate(`/order/${data._id}`);
+            }
         } catch (err) {
             setError(err.response?.data?.message || err.message || 'Something went wrong');
         } finally {
@@ -147,6 +221,16 @@ const CheckoutPage = () => {
                                 <span className="custom-radio"></span>
                                 Credit Card (Stripe)
                             </label>
+
+                            {paymentMethod === 'Stripe' && (
+                                <div className="stripe-element-container glass-panel">
+                                    <label className="stripe-label">Card Details</label>
+                                    <div className="stripe-card-input">
+                                        <CardElement options={cardElementOptions} />
+                                    </div>
+                                </div>
+                            )}
+
                             <label className={`payment-option ${paymentMethod === 'PayPal' ? 'selected' : ''}`}>
                                 <input
                                     type="radio"
@@ -207,6 +291,14 @@ const CheckoutPage = () => {
                 </div>
             </div>
         </div>
+    );
+};
+
+const CheckoutPage = () => {
+    return (
+        <Elements stripe={stripePromise}>
+            <CheckoutForm />
+        </Elements>
     );
 };
 

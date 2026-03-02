@@ -207,6 +207,35 @@
     font-size: 0.9rem;
 }
 
+
+.stripe-element-container {
+    margin: 1rem 0;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stripe-label {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.stripe-card-input {
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.stripe-card-input:focus-within {
+    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.1);
+}
+
 @media (max-width: 968px) {
     .checkout-container {
         flex-direction: column;

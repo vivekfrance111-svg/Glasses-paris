@@ -127,3 +127,12 @@ Phase 6: Forgot Password Flow
 ----------
 ralph-done-6phase
 - [x] Frontend (Stripe UI): Installed `@stripe/react-stripe-js` and `@stripe/stripe-js` in the frontend.
+
+ -   [ x ]   B a c k e n d   ( S t r i p e   A P I ) :   I n s t a l l e d   s t r i p e   n p m   p a c k a g e .   C r e a t e d   a   n e w   P O S T   / a p i / o r d e r s / c r e a t e - p a y m e n t - i n t e n t   e n d p o i n t . 
+ -   [ x ]   F r o n t e n d   ( C h e c k o u t   P a g e ) :   U p g r a d e d   t h e   C h e c k o u t P a g e . j s x   t o   w r a p   t h e   p a y m e n t   f o r m   i n   S t r i p e ' s   E l e m e n t s   p r o v i d e r .   A d d e d   t h e   S t r i p e   C a r d E l e m e n t . 
+ -   [ x ]   F r o n t e n d   ( P r o c e s s i n g ) :   C o n f i r m e d   p a y m e n t   w i t h   S t r i p e   b e f o r e   s a v i n g   t h e   f i n a l   O r d e r   t o   M o n g o D B .   F i x e d   f r o n t e n d   r e d i r e c t   b u g   u p o n   s u c c e s s . 
+ -   [ x ]   B r o w s e r   V a l i d a t i o n :   C o n d u c t e d   a n   e n d - t o - e n d   b r o w s e r   c h e c k o u t   t e s t   v e r i f y i n g   S t r i p e   i n t e g r a t i o n   a n d   s u c c e s s f u l   r e d i r e c t . 
+ - - - - - - - - - - 
+ r a l p h - d o n e - v k 2 0 n 
+  
+ 

@@ -1,4 +1,9 @@
 import Order from '../models/Order.js';
+import Stripe from 'stripe';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -32,6 +37,9 @@ const addOrderItems = async (req, res) => {
                 taxPrice,
                 shippingPrice,
                 totalPrice,
+                isPaid: req.body.isPaid || false,
+                paidAt: req.body.paidAt,
+                paymentResult: req.body.paymentResult,
             };
 
             // In development, handle cases where MongoDB is unavailable
@@ -201,6 +209,29 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
+// @desc    Create payment intent for Stripe
+// @route   POST /api/orders/create-payment-intent
+// @access  Private
+const createPaymentIntent = async (req, res) => {
+    const { totalPrice } = req.body;
+
+    try {
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: Math.round(totalPrice * 100), // Stripe expects amount in cents
+            currency: 'usd',
+            automatic_payment_methods: {
+                enabled: true,
+            },
+        });
+
+        res.send({
+            clientSecret: paymentIntent.client_secret,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 export {
     addOrderItems,
     getOrderById,
@@ -208,6 +239,7 @@ export {
     getMyOrders,
     getOrders,
     getOrderStats,
-    updateOrderStatus
+    updateOrderStatus,
+    createPaymentIntent
 };
 
