@@ -182,5 +182,8 @@ ralph-done-6phase
 - [x] Refinement: Aligned frontend order total calculation with backend logic for tax and shipping.
 - [x] Phase 6 Enterprise Security - Backend Price Verification: Updated `createPaymentIntent` in `orderController.js` to strictly verify product prices and lens options against MongoDB. The backend now calculates the final total independently of frontend inputs to prevent price manipulation fraud.
 
+- [x] Phase 6 Enterprise Security - Stripe Webhooks: Implemented a secure Stripe Webhook endpoint (`/api/orders/webhook`) with signature verification using `stripe.webhooks.constructEvent`.
+- [x] Backend Refactoring: Updated `createPaymentIntent` in `orderController.js` to create a pending order (isPaid: false) in MongoDB before creating the Stripe Payment Intent. Included the `orderId` in Stripe metadata for secure webhook reconciliation.
+- [x] Frontend Refactoring: Updated `CheckoutPage.jsx` to send full shipping and order details during the `create-payment-intent` call. Eliminated the secondary client-side order creation call, ensuring that only the backend webhook marks orders as paid.
+
 ----------
-ralph-done-79irr
