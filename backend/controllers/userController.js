@@ -13,6 +13,9 @@ const authUser = async (req, res) => {
         const user = await User.findOne({ email });
 
         if (user && (await user.matchPassword(password))) {
+            if (!user.isVerified) {
+                return res.status(401).json({ message: 'Please verify your email to log in' });
+            }
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -42,20 +45,49 @@ const registerUser = async (req, res) => {
             return;
         }
 
+        // Get reset token
+        const verificationToken = crypto.randomBytes(20).toString('hex');
+
+        // Hash token and set to verificationToken field
+        const hashedVerificationToken = crypto
+            .createHash('sha256')
+            .update(verificationToken)
+            .digest('hex');
+
         const user = await User.create({
             name,
             email,
             password,
+            verificationToken: hashedVerificationToken,
+            isVerified: false,
         });
 
         if (user) {
-            res.status(201).json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                isAdmin: user.isAdmin,
-                token: generateToken(user._id),
-            });
+            const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+            const finalUrl = `${frontendUrl}/verify-email/${verificationToken}`;
+
+            const message = `Welcome to Glasses E-Commerce! Please verify your email by clicking the link below: \n\n ${finalUrl}`;
+
+            try {
+                await sendEmail({
+                    email: user.email,
+                    subject: 'Email Verification',
+                    message,
+                });
+
+                res.status(201).json({
+                    success: true,
+                    message: 'Registration successful. Please check your email to verify your account.',
+                });
+            } catch (err) {
+                console.error(err);
+                // If email fails, we might want to delete the user or just allow them to resend later.
+                // For now, let's just return a success message but mention email failed.
+                res.status(201).json({
+                    success: true,
+                    message: 'Registration successful, but verification email could not be sent. Please contact support.',
+                });
+            }
         } else {
             res.status(400).json({ message: 'Invalid user data' });
         }
@@ -283,6 +315,36 @@ const resetPassword = async (req, res) => {
     }
 };
 
+// @desc    Verify email
+// @route   GET /api/users/verify-email/:token
+// @access  Public
+const verifyEmail = async (req, res) => {
+    try {
+        const verificationToken = crypto
+            .createHash('sha256')
+            .update(req.params.token)
+            .digest('hex');
+
+        const user = await User.findOne({ verificationToken });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired verification token' });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Email verified successfully! You can now log in.',
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 export {
     authUser,
     registerUser,
@@ -293,6 +355,7 @@ export {
     getUserById,
     updateUser,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    verifyEmail
 };
 

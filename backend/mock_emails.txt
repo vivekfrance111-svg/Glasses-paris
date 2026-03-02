@@ -1,0 +1,21 @@
+--- Email Sending (Mock) ---
+To: admin@example.com
+Subject: Password reset token
+Message: You are receiving this email because you (or someone else) have requested the reset of a password. Please make a PUT request to: 
+
+ http://localhost:5173/reset-password/1d25ad6da67acc55a75576845755237eb8e0736c
+---------------------------
+--- Email Sending (Mock) ---
+To: admin@example.com
+Subject: Password reset token
+Message: You are receiving this email because you (or someone else) have requested the reset of a password. Please make a PUT request to: 
+
+ http://localhost:5173/reset-password/57780d7c1a92851d12add39f22761606b452550e
+---------------------------
+--- Email Sending (Mock) ---
+To: vivekbhalani007@gmail.com
+Subject: Password reset token
+Message: You are receiving this email because you (or someone else) have requested the reset of a password. Please make a PUT request to: 
+
+ http://localhost:5173/reset-password/8e1846e8af9e441a35e00efc5de5bd8a516ba8db
+---------------------------

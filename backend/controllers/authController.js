@@ -1,5 +1,7 @@
+import crypto from 'crypto';
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
+import sendEmail from '../utils/sendEmail.js';
 
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
@@ -33,6 +35,9 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
 
         if (user && (await user.matchPassword(password))) {
+            if (!user.isVerified) {
+                return res.status(401).json({ message: 'Please verify your email to log in' });
+            }
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -63,20 +68,47 @@ const registerUser = async (req, res) => {
             return;
         }
 
+        // Get verification token
+        const verificationToken = crypto.randomBytes(20).toString('hex');
+
+        // Hash token and set to verificationToken field
+        const hashedVerificationToken = crypto
+            .createHash('sha256')
+            .update(verificationToken)
+            .digest('hex');
+
         const user = await User.create({
             name,
             email,
             password,
+            verificationToken: hashedVerificationToken,
+            isVerified: false,
         });
 
         if (user) {
-            res.status(201).json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                isAdmin: user.isAdmin,
-                token: generateToken(user._id),
-            });
+            const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+            const finalUrl = `${frontendUrl}/verify-email/${verificationToken}`;
+
+            const message = `Welcome to Glasses E-Commerce! Please verify your email by clicking the link below: \n\n ${finalUrl}`;
+
+            try {
+                await sendEmail({
+                    email: user.email,
+                    subject: 'Email Verification',
+                    message,
+                });
+
+                res.status(201).json({
+                    success: true,
+                    message: 'Registration successful. Please check your email to verify your account.',
+                });
+            } catch (err) {
+                console.error(err);
+                res.status(201).json({
+                    success: true,
+                    message: 'Registration successful, but verification email could not be sent. Please contact support.',
+                });
+            }
         } else {
             res.status(400).json({ message: 'Invalid user data' });
         }

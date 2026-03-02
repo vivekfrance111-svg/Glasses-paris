@@ -133,6 +133,16 @@
     border: 1px solid rgba(255, 82, 82, 0.2);
 }
 
+.success-message {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
 .form-footer {
     margin-top: 2rem;
     font-size: 0.9rem;

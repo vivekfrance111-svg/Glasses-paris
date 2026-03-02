@@ -10,6 +10,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // @route   POST /api/orders
 // @access  Private
 const addOrderItems = async (req, res) => {
+    if (req.user && !req.user.isVerified) {
+        return res.status(401).json({ message: 'Please verify your email to place an order.' });
+    }
     try {
         const {
             orderItems,
@@ -214,6 +217,9 @@ const updateOrderStatus = async (req, res) => {
 // @route   POST /api/orders/create-payment-intent
 // @access  Private
 const createPaymentIntent = async (req, res) => {
+    if (req.user && !req.user.isVerified) {
+        return res.status(401).json({ message: 'Please verify your email to proceed to checkout.' });
+    }
     const { orderItems, shippingAddress, paymentMethod } = req.body;
 
     if (!orderItems || orderItems.length === 0) {

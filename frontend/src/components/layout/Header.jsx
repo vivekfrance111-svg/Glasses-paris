@@ -12,7 +12,10 @@ const Header = () => {
     const location = useLocation();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [searchKeyword, setSearchKeyword] = useState('');
     const dropdownRef = useRef(null);
+    const searchRef = useRef(null);
 
     const logoutHandler = () => {
         setDropdownOpen(false);
@@ -29,17 +32,30 @@ const Header = () => {
         setMobileNavOpen(prev => !prev);
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchKeyword.trim()) {
+            navigate(`/products?keyword=${searchKeyword.trim()}`);
+            setSearchOpen(false);
+            setSearchKeyword('');
+        }
+    };
+
     // Close mobile nav on route change
     useEffect(() => {
         setMobileNavOpen(false);
         setDropdownOpen(false);
+        setSearchOpen(false);
     }, [location.pathname]);
 
-    // Close dropdown when clicking outside
+    // Close dropdown and search when clicking outside
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setDropdownOpen(false);
+            }
+            if (searchRef.current && !searchRef.current.contains(e.target) && !e.target.closest('.search-btn')) {
+                setSearchOpen(false);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -73,9 +89,28 @@ const Header = () => {
                     </ul>
                 </nav>
                 <div className="header-actions">
-                    <button className="icon-btn search-btn" onClick={() => alert('Feature coming soon!')}>
-                        <FiSearch />
-                    </button>
+                    <div className={`search-container ${searchOpen ? 'active' : ''}`} ref={searchRef}>
+                        <form onSubmit={handleSearch} className="search-form">
+                            <input
+                                type="text"
+                                placeholder="Search eyewear..."
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                className="search-input"
+                                autoFocus={searchOpen}
+                            />
+                            <button type="submit" className="search-submit">
+                                <FiSearch />
+                            </button>
+                        </form>
+                    </div>
+
+                    {!searchOpen && (
+                        <button className="icon-btn search-btn" onClick={() => setSearchOpen(true)}>
+                            <FiSearch />
+                        </button>
+                    )}
+
                     {userInfo ? (
                         <div className="user-dropdown" ref={dropdownRef}>
                             <button className="icon-btn profile-btn" onClick={toggleDropdown}>
@@ -115,6 +150,23 @@ const Header = () => {
                         <FiX />
                     </button>
                 </div>
+
+                {/* Mobile Search */}
+                <div className="mobile-search-container">
+                    <form onSubmit={handleSearch} className="mobile-search-form">
+                        <input
+                            type="text"
+                            placeholder="Search eyewear..."
+                            value={searchKeyword}
+                            onChange={(e) => setSearchKeyword(e.target.value)}
+                            className="mobile-search-input"
+                        />
+                        <button type="submit" className="mobile-search-submit">
+                            <FiSearch />
+                        </button>
+                    </form>
+                </div>
+
                 <nav className="mobile-nav-links">
                     <Link to="/products">Collections</Link>
                     <Link to="/products?category=men">Men</Link>

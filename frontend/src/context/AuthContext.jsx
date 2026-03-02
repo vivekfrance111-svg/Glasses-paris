@@ -34,8 +34,12 @@ export const AuthProvider = ({ children }) => {
             setLoading(true);
             setError(null);
             const { data } = await axios.post('/api/auth/register', { name, email, password });
-            setUserInfo(data);
-            localStorage.setItem('userInfo', JSON.stringify(data));
+
+            if (data.token) {
+                setUserInfo(data);
+                localStorage.setItem('userInfo', JSON.stringify(data));
+            }
+            return data;
         } catch (err) {
             setError(err.response && err.response.data.message ? err.response.data.message : err.message);
             throw err;

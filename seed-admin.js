@@ -14,6 +14,7 @@ const seedAdmin = async () => {
 
         if (existingAdmin) {
             existingAdmin.isAdmin = true;
+            existingAdmin.isVerified = true;
             await existingAdmin.save();
             console.log('Admin user updated');
         } else {
@@ -21,7 +22,8 @@ const seedAdmin = async () => {
                 name: 'Admin User',
                 email,
                 password: 'password123',
-                isAdmin: true
+                isAdmin: true,
+                isVerified: true
             });
             console.log('Admin user created');
         }

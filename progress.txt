@@ -128,55 +128,55 @@ Phase 6: Forgot Password Flow
 ralph-done-6phase
 - [x] Frontend (Stripe UI): Installed `@stripe/react-stripe-js` and `@stripe/stripe-js` in the frontend.
 
- -   [ x ]   B a c k e n d   ( S t r i p e   A P I ) :   I n s t a l l e d   s t r i p e   n p m   p a c k a g e .   C r e a t e d   a   n e w   P O S T   / a p i / o r d e r s / c r e a t e - p a y m e n t - i n t e n t   e n d p o i n t . 
- -   [ x ]   F r o n t e n d   ( C h e c k o u t   P a g e ) :   U p g r a d e d   t h e   C h e c k o u t P a g e . j s x   t o   w r a p   t h e   p a y m e n t   f o r m   i n   S t r i p e ' s   E l e m e n t s   p r o v i d e r .   A d d e d   t h e   S t r i p e   C a r d E l e m e n t . 
- -   [ x ]   F r o n t e n d   ( P r o c e s s i n g ) :   C o n f i r m e d   p a y m e n t   w i t h   S t r i p e   b e f o r e   s a v i n g   t h e   f i n a l   O r d e r   t o   M o n g o D B .   F i x e d   f r o n t e n d   r e d i r e c t   b u g   u p o n   s u c c e s s . 
- -   [ x ]   B r o w s e r   V a l i d a t i o n :   C o n d u c t e d   a n   e n d - t o - e n d   b r o w s e r   c h e c k o u t   t e s t   v e r i f y i n g   S t r i p e   i n t e g r a t i o n   a n d   s u c c e s s f u l   r e d i r e c t . 
- - - - - - - - - - - 
- r a l p h - d o n e - v k 2 0 n 
- 
- 
- - 
- 
- [ x ] 
- 
- R e f a c t o r i n g : 
- 
- R e m o v e d 
- 
- h a r d c o d e d 
- 
- h t t p : / / l o c a l h o s t : 5 0 0 0 
- 
- U R L s 
- 
- a c r o s s 
- 
- a l l 
- 
- f r o n t e n d 
- 
- p a g e s 
- 
- t o 
- 
- u s e 
- 
- r e l a t i v e 
- 
- p a t h s 
- 
- v i a 
- 
- V i t e 
- 
- p r o x y . 
- 
- - - - - - - - - - - 
- 
- r a l p h - d o n e - w m y 0 g 
- 
- -
+ -   [ x ]   B a c k e n d   ( S t r i p e   A P I ) :   I n s t a l l e d   s t r i p e   n p m   p a c k a g e .   C r e a t e d   a   n e w   P O S T   / a p i / o r d e r s / c r e a t e - p a y m e n t - i n t e n t   e n d p o i n t . 
+ -   [ x ]   F r o n t e n d   ( C h e c k o u t   P a g e ) :   U p g r a d e d   t h e   C h e c k o u t P a g e . j s x   t o   w r a p   t h e   p a y m e n t   f o r m   i n   S t r i p e ' s   E l e m e n t s   p r o v i d e r .   A d d e d   t h e   S t r i p e   C a r d E l e m e n t . 
+ -   [ x ]   F r o n t e n d   ( P r o c e s s i n g ) :   C o n f i r m e d   p a y m e n t   w i t h   S t r i p e   b e f o r e   s a v i n g   t h e   f i n a l   O r d e r   t o   M o n g o D B .   F i x e d   f r o n t e n d   r e d i r e c t   b u g   u p o n   s u c c e s s . 
+ -   [ x ]   B r o w s e r   V a l i d a t i o n :   C o n d u c t e d   a n   e n d - t o - e n d   b r o w s e r   c h e c k o u t   t e s t   v e r i f y i n g   S t r i p e   i n t e g r a t i o n   a n d   s u c c e s s f u l   r e d i r e c t . 
+ - - - - - - - - - - 
+ r a l p h - d o n e - v k 2 0 n 
+ 
+ 
+ - 
+ 
+ [ x ] 
+ 
+ R e f a c t o r i n g : 
+ 
+ R e m o v e d 
+ 
+ h a r d c o d e d 
+ 
+ h t t p : / / l o c a l h o s t : 5 0 0 0 
+ 
+ U R L s 
+ 
+ a c r o s s 
+ 
+ a l l 
+ 
+ f r o n t e n d 
+ 
+ p a g e s 
+ 
+ t o 
+ 
+ u s e 
+ 
+ r e l a t i v e 
+ 
+ p a t h s 
+ 
+ v i a 
+ 
+ V i t e 
+ 
+ p r o x y . 
+ 
+ - - - - - - - - - - 
+ 
+ r a l p h - d o n e - w m y 0 g 
+ 
+ -
 
 - [x] Bug Fix: Fixed a ReferenceError in CheckoutPage.jsx where totalPrice was used without being defined.
 - [x] Refinement: Aligned frontend order total calculation with backend logic for tax and shipping.
@@ -187,12 +187,22 @@ ralph-done-6phase
 - [x] Frontend Refactoring: Updated `CheckoutPage.jsx` to send full shipping and order details during the `create-payment-intent` call. Eliminated the secondary client-side order creation call, ensuring that only the backend webhook marks orders as paid.
 
 ----------
--   [ x ]   I m p l e m e n t e d   P r o d u c t   V i s i b i l i t y   t o g g l e   f o r   I n v e n t o r y   M a n a g e m e n t .  
-         -   U p d a t e d   p r o d u c t   m o d e l   t o   i n c l u d e   i s V i s i b l e   f i e l d .  
-         -   E n h a n c e d   p r o d u c t C o n t r o l l e r   t o   s u p p o r t   f i l t e r i n g   b y   v i s i b i l i t y   f o r   p u b l i c   u s e r s   a n d   t o g g l i n g   s t a t u s   f o r   a d m i n s .  
-         -   A d d e d   v i s i b i l i t y   s t a t u s   i n d i c a t o r s   a n d   t o g g l e   b u t t o n s   t o   A d m i n P r o d u c t L i s t P a g e .  
-         -   I n t e g r a t e d   v i s i b i l i t y   c o n t r o l s   i n t o   A d m i n P r o d u c t C r e a t e P a g e   a n d   A d m i n P r o d u c t E d i t P a g e .  
-         -   A d d e d   p r e m i u m   s t y l i n g   f o r   i n v i s i b l e   p r o d u c t   r o w s   i n   t h e   a d m i n   i n t e r f a c e .  
-  
- - - - - - - - - - -  
- 
+-   [ x ]   I m p l e m e n t e d   P r o d u c t   V i s i b i l i t j   t o g g l e   f o r   I n v e n t o r y   M a n a g e m e n t .  
+         -   U p d a t e d   p r o d u c t   m o d e l   t o   i n c l u d e   i s V i s i b l e   f i e l d .  
+         -   E n h a n c e d   p r o d u c t C o n t r o l l e r   t o   s u p p o r t   f i l t e r i n g   b y   v i s i b i l i t y   f o r   p u b l i c   u s e r s   a n d   t o g g l i n g   s t a t u s   f o r   a d m i n s .  
+         -   A d d e d   v i s i b i l i t y   s t a t u s   i n d i c a t o r s   a n d   t o g g l e   b u t t o n s   t o   A d m i n P r o d u c t L i s t P a g e .  
+         -   I n t e g r a t e d   v i s i b i l i t y   c o n t r o l s   i n t o   A d m i n P r o d u c t C r e a t e P a g e   a n d   A d m i n P r o d u c t E d i t P a g e .  
+         -   A d d e d   p r e m i u m   s t y l i n g   f o r   i n v i s i b l e   p r o d u c t   r o w s   i n   t h e   a d m i n   i n t e r f a c e .  
+  
+ - - - - - - - - - -  
+ - - - - - - - - - -  
+ r a l p h - d o n e - 0 3 z z g  
+
+----------
+ralph-done-03zzg
+- [x] Phase 6 Enterprise Security - Backend Data Validation: Installed express-validator and express-mongo-sanitize. Implemented comprehensive validation rules for registration, login, profile updates, and order creation. Applied express-mongo-sanitize to prevent NoSQL injection.
+- [x] Phase 6 Enterprise Security - Rate Limiting & Headers: Installed express-rate-limit and helmet. Applied brute-force protection to all authentication endpoints (5 requests per 15 minutes) and secured HTTP headers.
+- [x] Phase 6 Enterprise Security - Email Verification: Updated User model with `isVerified` and `verificationToken`. Modified registration flow to generate verification tokens and send confirmation emails using `nodemailer`. Updated login and order creation controllers to block unverified users. Built premium `VerifyEmailPage` on the frontend and integrated it into the application routing to handle tokens.
+
+----------
+ralph-done-o1ktm

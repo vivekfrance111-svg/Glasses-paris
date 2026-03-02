@@ -163,7 +163,8 @@ const updateProduct = async (req, res) => {
             category,
             countInStock,
             frameStyle,
-            color
+            color,
+            isVisible
         } = req.body;
 
         const product = await Product.findById(req.params.id);

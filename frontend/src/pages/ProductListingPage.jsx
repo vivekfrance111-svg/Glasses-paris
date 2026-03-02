@@ -19,6 +19,7 @@ const ProductListingPage = () => {
     const colorQuery = searchParams.get('color') || '';
     const minPriceQuery = searchParams.get('minPrice') || '';
     const maxPriceQuery = searchParams.get('maxPrice') || '';
+    const keywordQuery = searchParams.get('keyword') || '';
     const sort = searchParams.get('sort') || 'newest';
 
     useEffect(() => {
@@ -31,6 +32,7 @@ const ProductListingPage = () => {
                 if (colorQuery) url += `color=${colorQuery}&`;
                 if (minPriceQuery) url += `minPrice=${minPriceQuery}&`;
                 if (maxPriceQuery) url += `maxPrice=${maxPriceQuery}&`;
+                if (keywordQuery) url += `keyword=${keywordQuery}&`;
 
                 const { data } = await axios.get(url);
 
@@ -53,7 +55,7 @@ const ProductListingPage = () => {
         };
 
         fetchProducts();
-    }, [categoryQuery, frameStyleQuery, colorQuery, minPriceQuery, maxPriceQuery, sort]);
+    }, [categoryQuery, frameStyleQuery, colorQuery, minPriceQuery, maxPriceQuery, keywordQuery, sort]);
 
     const updateFilter = (key, value) => {
         const newParams = new URLSearchParams(searchParams);
@@ -159,6 +161,7 @@ const ProductListingPage = () => {
                 <main className="plp-main">
                     <div className="plp-header">
                         <div className="results-count">
+                            {keywordQuery && <span className="search-term">Results for "<strong>{keywordQuery}</strong>": </span>}
                             Showing {products.length} products
                         </div>
                         <div className="sort-dropdown">

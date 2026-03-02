@@ -12,13 +12,14 @@ import {
     stripeWebhook,
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
+import { orderValidationRules, validate } from '../middleware/validatorMiddleware.js';
 
 router.route('/webhook').post(stripeWebhook);
 router.route('/')
-    .post(protect, addOrderItems)
+    .post(protect, orderValidationRules(), validate, addOrderItems)
     .get(protect, admin, getOrders);
 router.route('/stats').get(protect, admin, getOrderStats);
-router.route('/create-payment-intent').post(protect, createPaymentIntent);
+router.route('/create-payment-intent').post(protect, orderValidationRules(), validate, createPaymentIntent);
 router.route('/myorders').get(protect, getMyOrders);
 router.route('/:id').get(protect, getOrderById);
 router.route('/:id/pay').put(protect, updateOrderToPaid);

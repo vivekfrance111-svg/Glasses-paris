@@ -9,6 +9,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProductListPage from './pages/AdminProductListPage';
@@ -38,6 +39,7 @@ function App() {
               <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/order/:id" element={<OrderSuccessPage />} />
+              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
               <Route path="/profile" element={<ProfilePage />} />
 
               {/* Admin Routes */}

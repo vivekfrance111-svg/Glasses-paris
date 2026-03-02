@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import mongoSanitize from 'express-mongo-sanitize';
+import helmet from 'helmet';
 import productRoutes from './routes/productRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -22,6 +24,7 @@ const PORT = process.env.PORT || 5000;
 let dbConnected = false;
 
 // Middleware
+app.use(helmet());
 app.use(cors());
 
 // Stripe Webhook needs raw body - MUST be before express.json()
@@ -31,6 +34,7 @@ app.post('/api/orders/webhook', express.raw({ type: 'application/json' }), (req,
 });
 
 app.use(express.json());
+app.use(mongoSanitize());
 
 // Database Connection (non-blocking)
 const connectDB = async () => {

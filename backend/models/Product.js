@@ -65,6 +65,11 @@ const productSchema = new mongoose.Schema(
                 additionalPrice: { type: Number, default: 0 },
             },
         ],
+        isVisible: {
+            type: Boolean,
+            required: true,
+            default: true,
+        },
     },
     {
         timestamps: true,

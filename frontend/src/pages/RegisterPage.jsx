@@ -32,7 +32,10 @@ const RegisterPage = () => {
         } else {
             setMessage(null);
             try {
-                await register(name, email, password);
+                const data = await register(name, email, password);
+                if (data && data.message) {
+                    setMessage(data.message);
+                }
             } catch (err) {
                 // Error handled in context
             }
@@ -45,7 +48,7 @@ const RegisterPage = () => {
                 <h1>Join the Elite</h1>
                 <p className="subtitle">Experience luxury eyewear tailored for you</p>
 
-                {message && <div className="error-message">{message}</div>}
+                {message && <div className="success-message">{message}</div>}
                 {error && <div className="error-message">{error}</div>}
 
                 <form onSubmit={submitHandler}>
