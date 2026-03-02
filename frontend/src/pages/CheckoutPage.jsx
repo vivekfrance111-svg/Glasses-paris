@@ -85,10 +85,14 @@ const CheckoutForm = () => {
                 lensOptions: item.lensOptions
             }));
 
-            // 1. Create Payment Intent
-            const { data: { clientSecret } } = await axios.post(
+            // 1. Create Payment Intent and Pending Order
+            const { data: { clientSecret, orderId } } = await axios.post(
                 '/api/orders/create-payment-intent',
-                { orderItems },
+                {
+                    orderItems,
+                    shippingAddress,
+                    paymentMethod
+                },
                 config
             );
 
@@ -103,7 +107,7 @@ const CheckoutForm = () => {
                             line1: shippingAddress.address,
                             city: shippingAddress.city,
                             postal_code: shippingAddress.postalCode,
-                            country: shippingAddress.country || 'US', // Using user input or fallback
+                            country: shippingAddress.country || 'US',
                         }
                     },
                 },
@@ -116,40 +120,9 @@ const CheckoutForm = () => {
             }
 
             if (paymentIntent.status === 'succeeded') {
-                const shippingPrice = cartTotal > 100 ? 0 : 10;
-                const taxPrice = cartTotal * 0.1;
-                const totalPrice = cartTotal + shippingPrice + taxPrice;
-
-                // 3. Create Order in Database
-                const orderData = {
-                    orderItems: cartItems.map(item => ({
-                        name: item.name,
-                        qty: item.qty,
-                        image: item.image,
-                        price: item.price + (item.lensOptions?.additionalPrice || 0),
-                        product: item._id,
-                        lensOptions: item.lensOptions
-                    })),
-                    shippingAddress,
-                    paymentMethod,
-                    itemsPrice: cartTotal,
-                    shippingPrice,
-                    taxPrice,
-                    totalPrice,
-                    isPaid: true,
-                    paidAt: new Date().toISOString(),
-                    paymentResult: {
-                        id: paymentIntent.id,
-                        status: paymentIntent.status,
-                        email_address: userInfo.email
-                    }
-                };
-
-                const { data } = await axios.post('/api/orders', orderData, config);
-
                 setIsSuccess(true);
                 clearCart();
-                navigate(`/order/${data._id}`);
+                navigate(`/order/${orderId}`);
             }
         } catch (err) {
             setError(err.response?.data?.message || err.message || 'Something went wrong');

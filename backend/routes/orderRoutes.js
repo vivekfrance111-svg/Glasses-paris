@@ -9,9 +9,11 @@ import {
     getOrderStats,
     updateOrderStatus,
     createPaymentIntent,
+    stripeWebhook,
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
+router.route('/webhook').post(stripeWebhook);
 router.route('/')
     .post(protect, addOrderItems)
     .get(protect, admin, getOrders);

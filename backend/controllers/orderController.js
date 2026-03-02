@@ -214,7 +214,7 @@ const updateOrderStatus = async (req, res) => {
 // @route   POST /api/orders/create-payment-intent
 // @access  Private
 const createPaymentIntent = async (req, res) => {
-    const { orderItems } = req.body;
+    const { orderItems, shippingAddress, paymentMethod } = req.body;
 
     if (!orderItems || orderItems.length === 0) {
         return res.status(400).json({ message: 'No items in order' });
@@ -228,12 +228,6 @@ const createPaymentIntent = async (req, res) => {
             const product = await Product.findById(item.product);
 
             if (!product) {
-                // If MongoDB is unavailable in development, try to find in mock data or use a fallback
-                if (process.env.NODE_ENV === 'development' && !mongoose.connection.readyState) {
-                    // Fallback for mock environments if necessary, but strictly we should error in enterprise apps
-                    // For now, let's treat it as an error as per Phase 6 requirements
-                    return res.status(404).json({ message: `Product not found: ${item.product}` });
-                }
                 return res.status(404).json({ message: `Product not found: ${item.product}` });
             }
 
@@ -246,11 +240,28 @@ const createPaymentIntent = async (req, res) => {
         }
 
         // Apply business logic for shipping and tax
-        // Shipping is free over $100, otherwise $10
         const calculatedShippingPrice = itemsPrice > 100 ? 0 : 10;
-        // Tax is a flat 10%
         const calculatedTaxPrice = itemsPrice * 0.1;
         const totalPrice = itemsPrice + calculatedShippingPrice + calculatedTaxPrice;
+
+        // Create a pending order first
+        const orderData = {
+            orderItems: orderItems.map((x) => ({
+                ...x,
+                product: x.product,
+            })),
+            user: req.user._id,
+            shippingAddress,
+            paymentMethod: paymentMethod || 'Stripe',
+            itemsPrice,
+            taxPrice: calculatedTaxPrice,
+            shippingPrice: calculatedShippingPrice,
+            totalPrice,
+            isPaid: false,
+        };
+
+        const order = new Order(orderData);
+        const createdOrder = await order.save();
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(totalPrice * 100), // Stripe expects amount in cents
@@ -259,22 +270,72 @@ const createPaymentIntent = async (req, res) => {
                 enabled: true,
             },
             metadata: {
-                integration_check: 'accept_a_payment',
-                // Adding items to metadata can help with reconciliation later
-                order_items_count: orderItems.length
+                orderId: createdOrder._id.toString(),
+                userEmail: req.user.email
             }
         });
 
         res.send({
             clientSecret: paymentIntent.client_secret,
-            // Also returning the calculated prices can help the frontend stay in sync
-            // but the payment intent is the source of truth for the charge.
+            orderId: createdOrder._id,
             totalPrice: totalPrice.toFixed(2)
         });
     } catch (error) {
         console.error('Stripe Payment Intent Error:', error);
         res.status(500).json({ message: error.message });
     }
+};
+
+// @desc    Stripe Webhook
+// @route   POST /api/orders/webhook
+// @access  Public
+const stripeWebhook = async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
+
+    try {
+        // req.body is already a Buffer here thanks to server.js middleware
+        event = stripe.webhooks.constructEvent(
+            req.body,
+            sig,
+            process.env.STRIPE_WEBHOOK_SECRET || 'whsec_dummy'
+        );
+    } catch (err) {
+        console.error(`Webhook Signature verification failed: ${err.message}`);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle the event
+    if (event.type === 'payment_intent.succeeded') {
+        const paymentIntent = event.data.object;
+        const orderId = paymentIntent.metadata.orderId;
+
+        console.log(`💰 Payment Intent Succeeded for order: ${orderId}`);
+
+        if (orderId) {
+            try {
+                const order = await Order.findById(orderId);
+                if (order) {
+                    order.isPaid = true;
+                    order.paidAt = Date.now();
+                    order.paymentResult = {
+                        id: paymentIntent.id,
+                        status: paymentIntent.status,
+                        update_time: Date.now().toString(),
+                        email_address: paymentIntent.receipt_email || paymentIntent.metadata.userEmail || '',
+                    };
+                    await order.save();
+                    console.log(`✅ Order ${orderId} marked as paid successfully.`);
+                } else {
+                    console.warn(`⚠️ Order ${orderId} not found in database.`);
+                }
+            } catch (error) {
+                console.error(`❌ Error updating order ${orderId}:`, error);
+            }
+        }
+    }
+
+    res.json({ received: true });
 };
 
 export {
@@ -285,6 +346,7 @@ export {
     getOrders,
     getOrderStats,
     updateOrderStatus,
-    createPaymentIntent
+    createPaymentIntent,
+    stripeWebhook
 };
 

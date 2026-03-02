@@ -23,6 +23,13 @@ let dbConnected = false;
 
 // Middleware
 app.use(cors());
+
+// Stripe Webhook needs raw body - MUST be before express.json()
+app.post('/api/orders/webhook', express.raw({ type: 'application/json' }), (req, res, next) => {
+    // This is a temporary pass-through to the router, but ensures raw body is used
+    next();
+});
+
 app.use(express.json());
 
 // Database Connection (non-blocking)
