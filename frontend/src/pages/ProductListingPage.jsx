@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import { FiSliders, FiX } from 'react-icons/fi';
+import { FiSliders, FiX, FiInbox } from 'react-icons/fi';
 import ProductCard from '../components/common/ProductCard';
 import CustomSelect from '../components/common/CustomSelect';
 import './ProductListingPage.css';
@@ -199,6 +199,7 @@ const ProductListingPage = () => {
                                 ))
                             ) : (
                                 <div className="empty-state">
+                                    <FiInbox className="empty-icon" />
                                     <p>No products match your selected filters.</p>
                                     <button onClick={clearFilters} className="btn-primary-sm">Clear Filters</button>
                                 </div>
