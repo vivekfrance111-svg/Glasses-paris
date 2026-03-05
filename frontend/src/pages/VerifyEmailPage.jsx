@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api';
 import { FiCheckCircle, FiXCircle, FiLoader } from 'react-icons/fi';
 import './LoginPage.css';
 
@@ -13,7 +13,7 @@ const VerifyEmailPage = () => {
     useEffect(() => {
         const verifyEmail = async () => {
             try {
-                await axios.get(`/api/users/verify-email/${token}`);
+                await API.get(`/api/users/verify-email/${token}`);
                 setSuccess(true);
                 setLoading(false);
             } catch (err) {

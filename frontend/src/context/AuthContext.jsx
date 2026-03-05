@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 
 const AuthContext = createContext();
 
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         try {
             setLoading(true);
             setError(null);
-            const { data } = await axios.post('/api/auth/login', { email, password });
+            const { data } = await API.post('/api/auth/login', { email, password });
             setUserInfo(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
         } catch (err) {
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         try {
             setLoading(true);
             setError(null);
-            const { data } = await axios.post('/api/auth/register', { name, email, password });
+            const { data } = await API.post('/api/auth/register', { name, email, password });
 
             if (data.token) {
                 setUserInfo(data);
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            const { data } = await axios.put('/api/users/profile', userData, config);
+            const { data } = await API.put('/api/users/profile', userData, config);
             setUserInfo({ ...userInfo, ...data });
             localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, ...data }));
         } catch (err) {

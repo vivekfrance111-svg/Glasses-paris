@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/layout/AdminSidebar';
 import './AdminDashboard.css';
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
                         Authorization: `Bearer ${userInfo.token}`,
                     },
                 };
-                const { data } = await axios.get('/api/orders/stats', config);
+                const { data } = await API.get('/api/orders/stats', config);
                 setStats(data);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);

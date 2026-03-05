@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api';
 import { FiSliders, FiX, FiInbox } from 'react-icons/fi';
 import ProductCard from '../components/common/ProductCard';
 import CustomSelect from '../components/common/CustomSelect';
@@ -34,7 +34,7 @@ const ProductListingPage = () => {
                 if (maxPriceQuery) url += `maxPrice=${maxPriceQuery}&`;
                 if (keywordQuery) url += `keyword=${keywordQuery}&`;
 
-                const { data } = await axios.get(url);
+                const { data } = await API.get(url);
 
                 let sortedProducts = [...data.products];
                 if (sort === 'price-low') {

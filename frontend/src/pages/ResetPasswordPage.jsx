@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { FiLock, FiEye, FiEyeOff, FiCheckCircle } from 'react-icons/fi';
-import axios from 'axios';
+import API from '../api';
 import './ResetPasswordPage.css';
 
 const getPasswordStrength = (password) => {
@@ -48,7 +48,7 @@ const ResetPasswordPage = () => {
 
         try {
             setLoading(true);
-            await axios.put(`/api/users/reset-password/${token}`, { password });
+            await API.put(`/api/users/reset-password/${token}`, { password });
             setSuccess(true);
 
             // Redirect to login after 3 seconds

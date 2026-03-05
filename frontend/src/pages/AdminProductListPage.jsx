@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/layout/AdminSidebar';
 import './AdminProductListPage.css';
@@ -23,7 +23,7 @@ const AdminProductListPage = () => {
                         Authorization: `Bearer ${userInfo.token}`,
                     },
                 };
-                const { data } = await axios.get('/api/products?showAll=true', config);
+                const { data } = await API.get('/api/products?showAll=true', config);
                 setProducts(data.products);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
@@ -43,7 +43,7 @@ const AdminProductListPage = () => {
                         Authorization: `Bearer ${userInfo.token}`,
                     },
                 };
-                await axios.delete(`/api/products/${id}`, config);
+                await API.delete(`/api/products/${id}`, config);
                 setSuccessDelete(!successDelete);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
@@ -59,7 +59,7 @@ const AdminProductListPage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            await axios.put(`/api/products/${id}`, { isVisible: !currentStatus }, config);
+            await API.put(`/api/products/${id}`, { isVisible: !currentStatus }, config);
             setSuccessDelete(!successDelete); // Reuse this to refresh the list
         } catch (err) {
             setError(err.response?.data?.message || err.message);
@@ -74,7 +74,7 @@ const AdminProductListPage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            const { data } = await axios.post('/api/products', {}, config);
+            const { data } = await API.post('/api/products', {}, config);
             setLoadingCreate(false);
             navigate(`/admin/product/${data._id}/edit`);
         } catch (err) {

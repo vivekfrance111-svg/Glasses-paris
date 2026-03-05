@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiCheckCircle } from 'react-icons/fi';
-import axios from 'axios';
+import API from '../api';
 import './ForgotPasswordPage.css';
 
 const ForgotPasswordPage = () => {
@@ -17,7 +17,7 @@ const ForgotPasswordPage = () => {
             setError(null);
             setSuccess(false);
 
-            await axios.post('/api/users/forgot-password', { email });
+            await API.post('/api/users/forgot-password', { email });
 
             setSuccess(true);
             setEmail('');

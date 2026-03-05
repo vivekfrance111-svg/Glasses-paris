@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/layout/AdminSidebar';
 import CustomSelect from '../components/common/CustomSelect';
@@ -41,7 +41,7 @@ const AdminProductEditPage = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             };
-            const { data } = await axios.post('/api/upload', formData, config);
+            const { data } = await API.post('/api/upload', formData, config);
             setImage(data.image);
             setUploading(false);
         } catch (err) {
@@ -54,11 +54,11 @@ const AdminProductEditPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch categories
-                const { data: categoriesData } = await axios.get('/api/categories');
+                const { data: categoriesData } = await API.get('/api/categories');
                 setCategories(categoriesData);
 
                 // Fetch product
-                const { data: productData } = await axios.get(`/api/products/${productId}`);
+                const { data: productData } = await API.get(`/api/products/${productId}`);
                 if (productData) {
                     setName(productData.name);
                     setPrice(productData.price);
@@ -92,7 +92,7 @@ const AdminProductEditPage = () => {
                 },
             };
 
-            await axios.put(
+            await API.put(
                 `/api/products/${productId}`,
                 {
                     name,

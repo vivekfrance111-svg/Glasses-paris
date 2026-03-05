@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Loader from '../components/common/Loader';
 import Skeleton from '../components/common/Skeleton';
-import axios from 'axios';
+import API from '../api';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
@@ -37,7 +37,7 @@ const ProfilePage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            const { data } = await axios.get('/api/orders/myorders', config);
+            const { data } = await API.get('/api/orders/myorders', config);
             setOrders(data);
         } catch (err) {
             setError(err.response?.data?.message || err.message);

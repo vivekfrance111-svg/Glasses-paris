@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import API from '../api';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import './CheckoutPage.css';
@@ -86,7 +86,7 @@ const CheckoutForm = () => {
             }));
 
             // 1. Create Payment Intent and Pending Order
-            const { data: { clientSecret, orderId } } = await axios.post(
+            const { data: { clientSecret, orderId } } = await API.post(
                 '/api/orders/create-payment-intent',
                 {
                     orderItems,

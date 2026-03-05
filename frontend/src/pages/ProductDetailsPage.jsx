@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import CustomSelect from '../components/common/CustomSelect';
@@ -28,7 +28,7 @@ const ProductDetailsPage = () => {
     const fetchProduct = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get(`/api/products/${id}`);
+            const { data } = await API.get(`/api/products/${id}`);
             setProduct(data);
             if (data.lensOptions && data.lensOptions.length > 0) {
                 setSelectedLens(data.lensOptions[0].lensType);
@@ -57,7 +57,7 @@ const ProductDetailsPage = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             };
-            const { data } = await axios.post('/api/upload', formData, config);
+            const { data } = await API.post('/api/upload', formData, config);
             setReviewImage(data.image);
             setUploadingReviewImage(false);
         } catch (err) {
@@ -79,7 +79,7 @@ const ProductDetailsPage = () => {
                 },
             };
 
-            await axios.post(
+            await API.post(
                 '/api/reviews',
                 { rating, comment, productId: id, image: reviewImage },
                 config

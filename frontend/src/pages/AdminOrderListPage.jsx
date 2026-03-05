@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/layout/AdminSidebar';
 import './AdminOrderListPage.css';
@@ -19,7 +19,7 @@ const AdminOrderListPage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            const { data } = await axios.get('/api/orders', config);
+            const { data } = await API.get('/api/orders', config);
             setOrders(data);
         } catch (err) {
             setError(err.response?.data?.message || err.message);
@@ -41,7 +41,7 @@ const AdminOrderListPage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            await axios.put(`/api/orders/${id}/status`, { status }, config);
+            await API.put(`/api/orders/${id}/status`, { status }, config);
             fetchOrders();
             setUpdateLoading(null);
         } catch (err) {

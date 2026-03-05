@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/layout/AdminSidebar';
 import CustomSelect from '../components/common/CustomSelect';
@@ -30,7 +30,7 @@ const AdminProductCreatePage = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const { data } = await axios.get('/api/categories');
+                const { data } = await API.get('/api/categories');
                 setCategories(data);
                 if (data.length > 0) {
                     setCategory(data[0]._id);
@@ -57,7 +57,7 @@ const AdminProductCreatePage = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             };
-            const { data } = await axios.post('/api/upload', formData, config);
+            const { data } = await API.post('/api/upload', formData, config);
             setImage(data.image);
             setUploading(false);
         } catch (err) {
@@ -82,7 +82,7 @@ const AdminProductCreatePage = () => {
                 },
             };
 
-            await axios.post(
+            await API.post(
                 '/api/products',
                 {
                     name,

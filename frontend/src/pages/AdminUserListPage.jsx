@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/layout/AdminSidebar';
 import './AdminUserListPage.css';
@@ -19,7 +19,7 @@ const AdminUserListPage = () => {
                         Authorization: `Bearer ${userInfo.token}`,
                     },
                 };
-                const { data } = await axios.get('/api/users', config);
+                const { data } = await API.get('/api/users', config);
                 setUsers(data);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
@@ -39,7 +39,7 @@ const AdminUserListPage = () => {
                         Authorization: `Bearer ${userInfo.token}`,
                     },
                 };
-                await axios.delete(`/api/users/${id}`, config);
+                await API.delete(`/api/users/${id}`, config);
                 setSuccessDelete(!successDelete);
             } catch (err) {
                 setError(err.response?.data?.message || err.message);
@@ -55,7 +55,7 @@ const AdminUserListPage = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            await axios.put(`/api/users/${user._id}`, { isAdmin: !user.isAdmin }, config);
+            await API.put(`/api/users/${user._id}`, { isAdmin: !user.isAdmin }, config);
             setSuccessDelete(!successDelete); // Refresh
         } catch (err) {
             setError(err.response?.data?.message || err.message);
